@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "libft.h": "c",
+        "limits.h": "c",
+        "pipex.h": "c"
+    }
+}
