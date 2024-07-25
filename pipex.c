@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "pipex.h"
+#include "lib/include/libft.h"
 
 char    **get_PATH(char *env[])
 {
@@ -27,28 +28,28 @@ char    **get_PATH(char *env[])
     return (path);
 }
 
-//int main(int argc, char *argv[], char *env[])
-//{
-    //char    **path;
-    //int     infile;
-    //int     outfile;
-    //int     pipefd[2];
+int main(int argc, char *argv[], char *env[])
+{
+    char    **path;
+    int     infile;
+    int     outfile;
+    int     pipefd[2];
 
-    //if (argc < 5)
-    //{
-        //ft_printf("Incorrect format: ");
-        //ft_printf("<infile command 1 ... command n outfile>\n");
-        //return (0);
-    //}
-    //path = get_PATH(env);
-    //if (path == NULL)
-        //return (0);
-    //argv++;
-    //execute_pipe(path, argv);
-    //while (*path != NULL)
-    //{
-        //free(*path);
-        //path++;
-    //}
-    //return (0);
-//}
+    if (argc < 5)
+    {
+        ft_printf("Incorrect format: ");
+        ft_printf("<infile command 1 ... command n outfile>\n");
+        return (0);
+    }
+    path = get_PATH(env);
+    if (path == NULL)
+        return (0);
+    argv++;
+    execute_pipe(path, argv);
+    while (*path != NULL)
+    {
+        free(*path);
+        path++;
+    }
+    return (0);
+}
