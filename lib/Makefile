@@ -41,6 +41,7 @@ SRCS =	ft_atoi.c \
 		  ft_strlcpy.c \
 		  ft_strlen.c \
 		  ft_strmapi.c \
+		  ft_strcmp.c \
 		  ft_strncmp.c \
 		  ft_strnstr.c \
 		  ft_strrchr.c \
@@ -56,6 +57,7 @@ SRCS =	ft_atoi.c \
 		  ft_strtoa.c \
 		  ft_xtoa.c \
 		  MT_random_generator.c \
+		  get_next_line.c \
 
 SRCS_BONUS = ft_lstadd_back_bonus.c \
 		  ft_lstadd_front_bonus.c \

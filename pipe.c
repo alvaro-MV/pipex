@@ -40,13 +40,34 @@ char    *find_exec_in_PATH(char **path, char *exec)
     }
     return (NULL);
 }
+void	bad_exec(int pipefd[2], char **arguments)
+{
+	char	*freed_ptr;
+	close(pipefd[1]);
+	close(pipefd[0]);
+	while (*arguments)
+	{
+		freed_ptr = *arguments;
+		free(freed_ptr);
+		arguments++;
+	}
+	perror("Bad executable");
+	exit(-1);
+}
 
-void	execute_child(char **argv, char **path, int pipefd[2])
+/* 
+	bad exec, mal orden, que el archivo de redireccion no exista, 
+ */
+
+void	execute_child(char **argv, char **path, int pipefd[2], int mask)
 {
 	char	**arguments;
+	int		file_fd;
 
 	arguments = ft_split(*argv, ' ');
 	arguments[0] = find_exec_in_PATH(path, arguments[0]);
+	if (arguments[0] == NULL)
+		bad_exec(pipefd, arguments);
 	if (argv[2] != NULL)
 	{
 		if (dup2(pipefd[1], 1) == -1)
@@ -54,7 +75,7 @@ void	execute_child(char **argv, char **path, int pipefd[2])
 	}
 	else
 	{	
-		int	file_fd = open(argv[1], O_RDWR, O_CREAT, O_TRUNC);
+		file_fd = open(argv[1], mask);
 		manage_dup2(file_fd, 1);
 		close(file_fd);
 	}
@@ -64,27 +85,21 @@ void	execute_child(char **argv, char **path, int pipefd[2])
 	(perror("execve"), exit(-1));
 }
 
-void	execute_pipe(char **path, char **argv)
+void	execute_pipe(char **path, char **argv, int infd, int mask)
 {
 	int		pipefd[2];
-	int		ret;
-	int 	status;
+	int		status;
 	int		fdd;
 
-	int	file_fd = open(*argv, O_RDONLY);
-	manage_dup2(file_fd, 0);
-	close(file_fd);
-	argv++;	
+	manage_dup2(infd, 0);
+	close(infd);
 	while (argv[1] != NULL)
 	{
-		if (pipe(pipefd) == -1)
-			(perror("pipex"), exit(-1));
-		ret = fork();
-        manage_fork_ret(ret);
-		if (ret == 0)
+		manage_pipe(pipefd);
+		if (Fork() == 0)
 		{
 			dup2(fdd, 0);
-			execute_child(argv, path, pipefd);
+			execute_child(argv, path, pipefd, mask);
 		}
 		else
 		{

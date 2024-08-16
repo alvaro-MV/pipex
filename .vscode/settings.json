@@ -2,6 +2,8 @@
     "files.associations": {
         "libft.h": "c",
         "limits.h": "c",
-        "pipex.h": "c"
+        "pipex.h": "c",
+        "heredoc.h": "c",
+        "system_calls.h": "c"
     }
 }

@@ -3,11 +3,11 @@
 int	manage_pipe(int pipefd[2])
 {
     if (pipe(pipefd) == -1)
-        (perror("Pipe not working\n"), exit(-1));
+		(perror("Pipe not working\n"), exit(-1));
 	return (0);
 }
 
-int	manage_dup2(int old_fd, int new_fd)
+void	manage_dup2(int old_fd, int new_fd)
 {
 	int	dup_value;
 	dup_value = dup2(old_fd, new_fd);
@@ -15,11 +15,14 @@ int	manage_dup2(int old_fd, int new_fd)
         (perror("Not posible to duplicate infile fd\n"), exit(-1));
 }
 
-int	manage_fork_ret(int ret)
+int	Fork()
 {
+	int	ret;
+
+	ret = fork();
 	if (ret == -1)
 		(perror("fork error\n"), exit(-1));
-	return (0);
+	return (ret);
 }
 
 int	manage_status(int status)

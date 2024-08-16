@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "pipex.h"
+#include "heredoc.h"
 #include "lib/include/libft.h"
 
 char    **get_PATH(char *env[])
@@ -28,12 +29,26 @@ char    **get_PATH(char *env[])
     return (path);
 }
 
+void    call_pipe(char **path, char **argv)
+{
+    int infile;
+
+    infile = open(argv[0], O_RDONLY);
+    argv++;
+    execute_pipe(path, argv, infile, PIPE_MASK);
+}
+
+void    call_here_doc(char **path, char **argv)
+{
+    int infile;
+
+	infile = here_doc(argv[1]);
+	execute_pipe(path, &argv[2], infile, HERE_MASK);
+}
+
 int main(int argc, char *argv[], char *env[])
 {
     char    **path;
-    int     infile;
-    int     outfile;
-    int     pipefd[2];
 
     if (argc < 5)
     {
@@ -45,7 +60,10 @@ int main(int argc, char *argv[], char *env[])
     if (path == NULL)
         return (0);
     argv++;
-    execute_pipe(path, argv);
+    if (ft_strcmp(argv[0], "here_doc") != 0)
+        call_pipe(path, argv);
+    else
+        call_here_doc(path, argv);
     while (*path != NULL)
     {
         free(*path);

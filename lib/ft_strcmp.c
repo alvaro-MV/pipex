@@ -1,36 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstsize_bonus.c                                 :+:      :+:    :+:   */
+/*   ft_strcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/01 13:28:28 by alvmoral          #+#    #+#             */
-/*   Updated: 2024/07/27 18:00:48 by alvaro           ###   ########.fr       */
+/*   Created: 2024/08/07 12:15:15 by alvaro            #+#    #+#             */
+/*   Updated: 2024/08/16 18:01:41 by alvaro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "include/libft.h"
 
-int	ft_lstsize(t_list *lst)
+int	ft_strcmp(char *s1, char *s2)
 {
-	int		contador;
+	int i;
 
-	contador = 0;
-	while (lst != NULL)
+	i = 0;
+	while (s1[i] == s2[i] && s1[i] != '\0' && s2[i] != '\0')
 	{
-		contador++;
-		lst = lst->next;
+		i++;
 	}
-	return (contador);
+	return (s1[i] - s2[i]);
 }
-
-//int	main(void)
-//{
-	//t_list	*new = &(t_list) {"c", NULL};
-	//t_list	*after = &(t_list) {"after", NULL};
-	//t_list	*list = &(t_list) {"Hola", NULL};
-	//ft_lstadd_front(&list, new);
-	//ft_lstadd_front(&after, list);
-	//printf("len: %i\n", ft_lstsize(new));
-//}
