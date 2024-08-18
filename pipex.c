@@ -35,7 +35,7 @@ void    call_pipe(char **path, char **argv)
 
     infile = open(argv[0], O_RDONLY);
     argv++;
-    execute_pipe(path, argv, infile, PIPE_MASK);
+    execute_pipe(path, argv, infile);
 }
 
 void    call_here_doc(char **path, char **argv)
@@ -43,7 +43,7 @@ void    call_here_doc(char **path, char **argv)
     int infile;
 
 	infile = here_doc(argv[1]);
-	execute_pipe(path, &argv[2], infile, HERE_MASK);
+	execute_pipe_hd(path, &argv[2], infile);
 }
 
 int main(int argc, char *argv[], char *env[])

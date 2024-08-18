@@ -10,7 +10,8 @@ int	manage_pipe(int pipefd[2])
 void	manage_dup2(int old_fd, int new_fd)
 {
 	int	dup_value;
-	dup_value = dup2(old_fd, new_fd);
+	if (old_fd != -1)
+		dup_value = dup2(old_fd, new_fd);
     if (dup_value == -1)
         (perror("Not posible to duplicate infile fd\n"), exit(-1));
 }

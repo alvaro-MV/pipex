@@ -59,7 +59,7 @@ void	bad_exec(int pipefd[2], char **arguments)
 	bad exec, mal orden, que el archivo de redireccion no exista, 
  */
 
-void	execute_child(char **argv, char **path, int pipefd[2], int mask)
+void	execute_child(char **argv, char **path, int pipefd[2])
 {
 	char	**arguments;
 	int		file_fd;
@@ -75,7 +75,7 @@ void	execute_child(char **argv, char **path, int pipefd[2], int mask)
 	}
 	else
 	{	
-		file_fd = open(argv[1], mask);
+		file_fd = open(argv[1], PIPE_MASK);
 		manage_dup2(file_fd, 1);
 		close(file_fd);
 	}
@@ -85,7 +85,7 @@ void	execute_child(char **argv, char **path, int pipefd[2], int mask)
 	(perror("execve"), exit(-1));
 }
 
-void	execute_pipe(char **path, char **argv, int infd, int mask)
+void	execute_pipe(char **path, char **argv, int infd)
 {
 	int		pipefd[2];
 	int		status;
@@ -99,7 +99,7 @@ void	execute_pipe(char **path, char **argv, int infd, int mask)
 		if (Fork() == 0)
 		{
 			dup2(fdd, 0);
-			execute_child(argv, path, pipefd, mask);
+			execute_child(argv, path, pipefd);
 		}
 		else
 		{
