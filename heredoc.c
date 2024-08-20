@@ -6,7 +6,7 @@
 /*   By: alvmoral <alvmoral@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/27 13:49:00 by alvaro            #+#    #+#             */
-/*   Updated: 2024/08/20 18:50:56 by alvmoral         ###   ########.fr       */
+/*   Updated: 2024/08/20 19:00:43 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,8 @@ int	here_doc(char *delimiter, char **path)
 	while (1)
 	{
 		next_line = get_next_line(0);
-		if (!next_line || ft_strcmp(next_line, delimiter) == 0)
+		ft_printf("next_line: %s\n", next_line);
+		if (ft_strcmp(next_line, delimiter) == 0)
 		{
 			free(next_line);
 			break ;
