@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   system_calls.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alvmoral <alvmoral@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 19:22:07 by alvaro            #+#    #+#             */
-/*   Updated: 2024/08/07 20:42:20 by alvaro           ###   ########.fr       */
+/*   Updated: 2024/08/20 18:11:53 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@
 # include <stdlib.h>
 # include "lib/include/libft.h"
 
-int		manage_pipe(int pipefd[2]);
-void	manage_dup2(int old_fd, int new_fd);
-int		Fork();
-int		manage_status(int status);
+int		manage_pipe(int pipefd[2], char **path);
+void	manage_dup2(int old_fd, int new_fd, char **path);
+int		ffork(char **path);
+int		manage_status(int status, char **path);
 
 #endif

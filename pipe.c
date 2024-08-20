@@ -12,37 +12,39 @@
 
 #include "pipex.h"
 
-char    *find_exec_in_PATH(char **path, char *exec)
+char	*find_exec_in_path(char **path, char *exec)
 {
-    int     l_exec;
-    int     l_path;
-    char    pathname[PATH_MAX];
+	int		l_exec;
+	int		l_path;
+	char	pathname[PATH_MAX];
 
-    if (access(exec, X_OK) == 0)
-        return (ft_strdup(exec));
-    if (exec[0] == '/')
-        return (NULL);
-    l_exec = ft_strlen(exec);
-    l_path = 0;
-    if (path != NULL) 
-    {
-        while (*path != NULL)
-        {
-            l_path = ft_strlen(*path);
-            ft_strlcpy(pathname, *path, l_path + 2);
-            if (pathname[l_path - 1] != '/')
-                ft_strlcat(pathname, "/", l_path + 2);
-            ft_strlcat(pathname, exec, l_exec + l_path + 2);
-            if (access(pathname, X_OK) == 0)
-                return (ft_strdup(pathname));
-            path++;
-        }
-    }
-    return (NULL);
+	if (access(exec, X_OK) == 0)
+		return (ft_strdup(exec));
+	if (exec[0] == '/')
+		return (NULL);
+	l_exec = ft_strlen(exec);
+	l_path = 0;
+	if (path != NULL)
+	{
+		while (*path != NULL)
+		{
+			l_path = ft_strlen(*path);
+			ft_strlcpy(pathname, *path, l_path + 2);
+			if (pathname[l_path - 1] != '/')
+				ft_strlcat(pathname, "/", l_path + 2);
+			ft_strlcat(pathname, exec, l_exec + l_path + 2);
+			if (access(pathname, X_OK) == 0)
+				return (ft_strdup(pathname));
+			path++;
+		}
+	}
+	return (NULL);
 }
+
 void	bad_exec(int pipefd[2], char **arguments)
 {
 	char	*freed_ptr;
+
 	close(pipefd[1]);
 	close(pipefd[0]);
 	while (*arguments)
@@ -65,22 +67,22 @@ void	execute_child(char **argv, char **path, int pipefd[2])
 	int		file_fd;
 
 	arguments = ft_split(*argv, ' ');
-	arguments[0] = find_exec_in_PATH(path, arguments[0]);
+	arguments[0] = find_exec_in_path(path, arguments[0]);
 	if (arguments[0] == NULL)
 		bad_exec(pipefd, arguments);
 	if (argv[2] != NULL)
-	{
-		if (dup2(pipefd[1], 1) == -1)
-			(perror("dup"), exit(-1));
-	}
+		manage_dup2(pipefd[1], 1, path);
 	else
-	{	
-		file_fd = open(argv[1], PIPE_MASK);
-		manage_dup2(file_fd, 1);
+	{
+		file_fd = open(argv[1], O_WRONLY | O_CREAT | O_TRUNC);
+		if (file_fd == -1)
+			return (perror(argv[1]), ft_free_array(path), exit (-1));
+		manage_dup2(file_fd, 1, path);
 		close(file_fd);
 	}
 	close(pipefd[1]);
 	close(pipefd[0]);
+	ft_free_array(path);
 	execve(arguments[0], arguments, NULL);
 	(perror("execve"), exit(-1));
 }
@@ -91,14 +93,15 @@ void	execute_pipe(char **path, char **argv, int infd)
 	int		status;
 	int		fdd;
 
-	manage_dup2(infd, 0);
+	fdd = 0;
+	manage_dup2(infd, 0, path);
 	close(infd);
 	while (argv[1] != NULL)
 	{
-		manage_pipe(pipefd);
-		if (Fork() == 0)
+		manage_pipe(pipefd, path);
+		if (ffork(path) == 0)
 		{
-			dup2(fdd, 0);
+			manage_dup2(fdd, 0, path);
 			execute_child(argv, path, pipefd);
 		}
 		else

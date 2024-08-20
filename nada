@@ -1,0 +1,17 @@
+Makefile
+heredoc.c
+heredoc.h
+heredoc.o
+infile
+lib
+nada
+outfile
+pipe.c
+pipe.o
+pipex
+pipex.c
+pipex.h
+pipex.o
+system_calls.c
+system_calls.h
+system_calls.o

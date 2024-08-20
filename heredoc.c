@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alvmoral <alvmoral@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/27 13:49:00 by alvaro            #+#    #+#             */
-/*   Updated: 2024/08/18 21:58:47 by alvaro           ###   ########.fr       */
+/*   Updated: 2024/08/20 18:50:56 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,22 +20,22 @@ void	execute_child_hd(char **argv, char **path, int pipefd[2])
 	int		file_fd;
 
 	arguments = ft_split(*argv, ' ');
-	arguments[0] = find_exec_in_PATH(path, arguments[0]);
+	arguments[0] = find_exec_in_path(path, arguments[0]);
 	if (arguments[0] == NULL)
 		bad_exec(pipefd, arguments);
 	if (argv[2] != NULL)
-	{
-		if (dup2(pipefd[1], 1) == -1)
-			(perror("dup"), exit(-1));
-	}
+		manage_dup2(pipefd[1], 1, path);
 	else
-	{	
-		file_fd = open(argv[1], O_WRONLY | O_CREAT | O_APPEND, 0777);
-		manage_dup2(file_fd, 1);
+	{
+		file_fd = open(argv[1], O_APPEND | O_CREAT | O_WRONLY, 0644);
+		if (file_fd == -1)
+			return (perror(argv[1]), ft_free_array(path), exit (-1));
+		manage_dup2(file_fd, 1, path);
 		close(file_fd);
 	}
 	close(pipefd[1]);
 	close(pipefd[0]);
+	ft_free_array(path);
 	execve(arguments[0], arguments, NULL);
 	(perror("execve"), exit(-1));
 }
@@ -46,14 +46,15 @@ void	execute_pipe_hd(char **path, char **argv, int infd)
 	int		status;
 	int		fdd;
 
-	manage_dup2(infd, 0);
+	fdd = 0;
+	manage_dup2(infd, 0, path);
 	close(infd);
 	while (argv[1] != NULL)
 	{
-		manage_pipe(pipefd);
-		if (Fork() == 0)
+		manage_pipe(pipefd, path);
+		if (ffork(path) == 0)
 		{
-			dup2(fdd, 0);
+			manage_dup2(fdd, 0, path);
 			execute_child(argv, path, pipefd);
 		}
 		else
@@ -66,25 +67,30 @@ void	execute_pipe_hd(char **path, char **argv, int infd)
 	}
 }
 
-int	here_doc(char *delimiter)
+int	here_doc(char *delimiter, char **path)
 {
 	char	*next_line;
 	int		infd[2];
 
-	manage_pipe(infd);
-    if (delimiter[ft_strlen(delimiter)-1] != '\n')
-    {
-        delimiter = ft_strjoin(delimiter, "\n");
-    }
+	manage_pipe(infd, path);
+	if (delimiter[ft_strlen(delimiter)-1] != '\n')
+	{
+		delimiter = ft_strjoin(delimiter, "\n");
+		if (delimiter == NULL)
+			return (-1);
+	}
 	while (1)
 	{
 		next_line = get_next_line(0);
-        if (ft_strcmp(next_line, delimiter) == 0)
+		if (!next_line || ft_strcmp(next_line, delimiter) == 0)
+		{
+			free(next_line);
 			break ;
+		}
 		write(infd[1], next_line, ft_strlen(next_line));
 		free(next_line);
 	}
-    free(delimiter);
+	free(delimiter);
 	close(infd[1]);
 	return (infd[0]);
 }
