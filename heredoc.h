@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvmoral <alvmoral@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 17:03:37 by alvmoral          #+#    #+#             */
-/*   Updated: 2024/08/20 18:14:04 by alvmoral         ###   ########.fr       */
+/*   Updated: 2024/09/01 16:42:10 by alvaro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 # define HEREDOC_H
 
 # include "pipex.h"
-# include "lib/include/get_next_line.h"
 
 int		here_doc(char *delimiter, char **path);
 void	execute_pipe_hd(char **path, char **argv, int infd);

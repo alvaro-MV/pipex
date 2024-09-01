@@ -1,7 +1,9 @@
 SRCS=pipex.c \
      pipe.c \
      heredoc.c \
-     system_calls.c
+     system_calls.c \
+	 get_next_line.c \
+	 get_next_line_utils.c
 
 LIB_DIR=./lib
 LIB_SRCS=$(wildcard $(LIB_DIR)/*.c)

@@ -6,12 +6,11 @@
 /*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/27 13:49:00 by alvaro            #+#    #+#             */
-/*   Updated: 2024/09/01 16:12:16 by alvaro           ###   ########.fr       */
+/*   Updated: 2024/09/01 16:42:45 by alvaro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "heredoc.h"
-#include "lib/include/get_next_line.h"
 #include "lib/include/libft.h"
 
 void	execute_child_hd(char **argv, char **path, int pipefd[2])

@@ -4,6 +4,7 @@
         "limits.h": "c",
         "pipex.h": "c",
         "heredoc.h": "c",
-        "system_calls.h": "c"
+        "system_calls.h": "c",
+        "get_next_line.h": "c"
     }
 }
