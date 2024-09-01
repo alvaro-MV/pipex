@@ -74,7 +74,7 @@ void	execute_child(char **argv, char **path, int pipefd[2])
 		manage_dup2(pipefd[1], 1, path);
 	else
 	{
-		file_fd = open(argv[1], O_WRONLY | O_CREAT | O_TRUNC);
+		file_fd = open(argv[1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
 		if (file_fd == -1)
 			return (perror(argv[1]), ft_free_array(path), exit (-1));
 		manage_dup2(file_fd, 1, path);

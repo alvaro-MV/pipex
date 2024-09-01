@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvmoral <alvmoral@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/27 13:49:00 by alvaro            #+#    #+#             */
-/*   Updated: 2024/08/20 19:00:43 by alvmoral         ###   ########.fr       */
+/*   Updated: 2024/09/01 16:12:16 by alvaro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,11 @@ void	execute_child_hd(char **argv, char **path, int pipefd[2])
 		manage_dup2(pipefd[1], 1, path);
 	else
 	{
-		file_fd = open(argv[1], O_APPEND | O_CREAT | O_WRONLY, 0644);
+		file_fd = open(argv[1], O_APPEND | O_WRONLY | O_CREAT, 0644);
 		if (file_fd == -1)
 			return (perror(argv[1]), ft_free_array(path), exit (-1));
 		manage_dup2(file_fd, 1, path);
-		close(file_fd);
+		//close(file_fd);
 	}
 	close(pipefd[1]);
 	close(pipefd[0]);
@@ -55,7 +55,7 @@ void	execute_pipe_hd(char **path, char **argv, int infd)
 		if (ffork(path) == 0)
 		{
 			manage_dup2(fdd, 0, path);
-			execute_child(argv, path, pipefd);
+			execute_child_hd(argv, path, pipefd);
 		}
 		else
 		{
@@ -82,7 +82,6 @@ int	here_doc(char *delimiter, char **path)
 	while (1)
 	{
 		next_line = get_next_line(0);
-		ft_printf("next_line: %s\n", next_line);
 		if (ft_strcmp(next_line, delimiter) == 0)
 		{
 			free(next_line);

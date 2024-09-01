@@ -22,10 +22,10 @@ $(LIBFT): $(LIB_SRCS)
 	@make -C $(LIB_DIR)
 
 %.o: %.c
-	$(CC) $(DEBUGFLAGS) -c $< -o $@
+	$(CC)  -c $< -o $@ $(DEBUGFLAGS)
 
 $(NAME): $(OBJ)
-	$(CC) $(OBJ) $(LIBFT) -o $@
+	$(CC) $(OBJ) $(LIBFT) -o $@ $(DEBUGFLAGS)
 
 clean:
 	rm -rf $(OBJ)
