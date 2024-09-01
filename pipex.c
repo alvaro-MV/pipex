@@ -52,24 +52,32 @@ void	call_here_doc(char **path, char **argv)
 	execute_pipe_hd(path, &argv[2], infile);
 }
 
-int	main(int argc, char *argv[], char *env[])
-{
-	char	**path;
-
+int	start(int argc, char *argv[], char **path)
+{	
 	if (argc < 5)
 	{
 		ft_printf("Incorrect format: ");
 		ft_printf("<infile command 1 ... command n outfile>\n");
-		return (0);
+		exit(1);
 	}
-	path = get_path(env);
-	if (path == NULL)
-		return (0);
 	argv++;
 	if (ft_strcmp(argv[0], "here_doc") != 0)
 		call_pipe(path, argv);
 	else
 		call_here_doc(path, argv);	
+
+}
+
+int	main(int argc, char *argv[], char *env[])
+{
+	char	**path;
+
+	path = get_path(env);
+	if (path == NULL)
+		return (0);
+
+	start(argc, argv, path);
+
 	ft_free_array(path);
 	return (0);
 }
