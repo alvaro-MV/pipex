@@ -34,25 +34,19 @@ char	*find_exec_in_path(char **path, char *exec)
 				ft_strlcat(pathname, "/", l_path + 2);
 			ft_strlcat(pathname, exec, l_exec + l_path + 2);
 			if (access(pathname, X_OK) == 0)
-				return (ft_strdup(pathname));
+				return (free(exec), ft_strdup(pathname));
 			path++;
 		}
 	}
-	return (NULL);
+	return (free(exec), NULL);
 }
 
-void	bad_exec(int pipefd[2], char **arguments)
+void	bad_exec(int pipefd[2], char **arguments, char **path)
 {
-	char	*freed_ptr;
-
 	close(pipefd[1]);
 	close(pipefd[0]);
-	while (*arguments)
-	{
-		freed_ptr = *arguments;
-		free(freed_ptr);
-		arguments++;
-	}
+	ft_free_array(arguments);
+	ft_free_array(path);
 	perror("Bad executable");
 	exit(-1);
 }
@@ -69,7 +63,7 @@ void	execute_child(char **argv, char **path, int pipefd[2])
 	arguments = ft_split(*argv, ' ');
 	arguments[0] = find_exec_in_path(path, arguments[0]);
 	if (arguments[0] == NULL)
-		bad_exec(pipefd, arguments);
+		bad_exec(pipefd, arguments, path);
 	if (argv[2] != NULL)
 		manage_dup2(pipefd[1], 1, path);
 	else
@@ -103,6 +97,7 @@ void	execute_pipe(char **path, char **argv, int infd)
 		{
 			manage_dup2(fdd, 0, path);
 			execute_child(argv, path, pipefd);
+			free(*argv);
 		}
 		else
 		{

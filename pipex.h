@@ -6,7 +6,7 @@
 /*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 19:44:12 by alvaro            #+#    #+#             */
-/*   Updated: 2024/09/01 16:47:20 by alvaro           ###   ########.fr       */
+/*   Updated: 2024/09/01 18:59:59 by alvaro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ char	**get_path(char *env[]);
 void	call_pipe(char **path, char **argv);
 void	call_here_doc(char **path, char **argv);
 
-void	bad_exec(int pipefd[2], char **arguments);
+void	bad_exec(int pipefd[2], char **arguments, char **path);
 char	*find_exec_in_path(char **path, char *exec);
 void	execute_child(char **argv, char **path, int pipefd[2]);
 void	execute_pipe(char **path, char **argv, int infd);
