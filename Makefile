@@ -3,21 +3,25 @@ SRCS=pipex.c \
      heredoc.c \
      system_calls.c \
 	 get_next_line.c \
-	 get_next_line_utils.c \
-	 main.c
+	 get_next_line_utils.c
+
+NORMAL_SRCS=$(SRCS) main.c
+TEST_SRCS=$(SRCS) test.c
 
 LIB_DIR=./lib
 LIB_SRCS=$(wildcard $(LIB_DIR)/*.c)
 LIBFT=./lib/libft.a
 
 NAME=pipex
+NAME_TEST= pipex_test
 CC=cc -Wall -Werror -Wextra
 
 ifeq ($(DEBUG), 1)
     DEBUGFLAGS =-g
 endif
 
-OBJ=$(patsubst %.c, %.o, $(SRCS))
+OBJ=$(patsubst %.c, %.o, $(NORMAL_SRCS))
+OBJ_TEST=$(patsubst %.c, %.o, $(TEST_SRCS))
 
 all: $(LIBFT) $(NAME)
 
@@ -30,14 +34,21 @@ $(LIBFT): $(LIB_SRCS)
 $(NAME): $(OBJ)
 	$(CC) $(OBJ) $(LIBFT) -o $@ $(DEBUGFLAGS)
 
+$(NAME_TEST): $(OBJ_TEST)
+	$(CC) $(OBJ_TEST) $(LIBFT) -o $@ $(DEBUGFLAGS)
+
+test: $(NAME_TEST)
+	./$(NAME_TEST)
+
 clean:
-	rm -rf $(OBJ)
+	rm -rf $(OBJ) $(OBJ_TEST)
 fclean:
-	rm -rf $(OBJ) $(NAME)
+	rm -rf $(OBJ) $(OBJ_TEST) $(NAME)
+
 re:
 	@make fclean
 	@make all
 norm: 
 	norminette $(SRCS)
 
-.PHONY:all clean fclean re norm
+.PHONY:all clean fclean re norm test
