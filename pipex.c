@@ -52,8 +52,14 @@ void	call_here_doc(char **path, char **argv)
 	execute_pipe_hd(path, &argv[2], infile);
 }
 
-int	start(int argc, char *argv[], char **path)
+int	start(int argc, char *argv[], char *env[])
 {	
+	char	**path;
+
+	path = get_path(env);
+	if (path == NULL)
+		return (0);
+
 	if (argc < 5)
 	{
 		ft_printf("Incorrect format: ");
@@ -66,18 +72,12 @@ int	start(int argc, char *argv[], char **path)
 	else
 		call_here_doc(path, argv);	
 
+	ft_free_array(path);
 }
 
 int	main(int argc, char *argv[], char *env[])
 {
-	char	**path;
+	start(argc, argv, env);
 
-	path = get_path(env);
-	if (path == NULL)
-		return (0);
-
-	start(argc, argv, path);
-
-	ft_free_array(path);
 	return (0);
 }
