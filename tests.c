@@ -1,7 +1,5 @@
 #include "test.h"
 
-int	start(int argc, char *argv[], char *env[]);
-
 int main() { 
 	test1();
 }

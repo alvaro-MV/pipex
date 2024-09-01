@@ -6,7 +6,7 @@
 /*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 19:44:12 by alvaro            #+#    #+#             */
-/*   Updated: 2024/09/01 19:24:40 by alvaro           ###   ########.fr       */
+/*   Updated: 2024/09/01 19:55:11 by alvaro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,4 +36,5 @@ void	execute_pipe(char **path, char **argv, int infd);
 
 char	*get_next_line(int fd);
 
+int	start(int argc, char *argv[], char *env[]);
 #endif

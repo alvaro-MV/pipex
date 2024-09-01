@@ -58,7 +58,7 @@ int	start(int argc, char *argv[], char *env[])
 
 	path = get_path(env);
 	if (path == NULL)
-		return (0);
+		return (1);
 
 	if (argc < 5)
 	{
@@ -73,11 +73,6 @@ int	start(int argc, char *argv[], char *env[])
 		call_here_doc(path, argv);	
 
 	ft_free_array(path);
-}
 
-int	main(int argc, char *argv[], char *env[])
-{
-	start(argc, argv, env);
-
-	return (0);
+	return 0;
 }
