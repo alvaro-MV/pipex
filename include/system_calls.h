@@ -6,7 +6,7 @@
 /*   By: alvmoral <alvmoral@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 19:22:07 by alvaro            #+#    #+#             */
-/*   Updated: 2024/08/20 18:11:53 by alvmoral         ###   ########.fr       */
+/*   Updated: 2024/09/11 13:25:53 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 # include <fcntl.h>
 # include <stdio.h>
 # include <stdlib.h>
-# include "lib/include/libft.h"
+# include "../lib/include/libft.h"
 
 int		manage_pipe(int pipefd[2], char **path);
 void	manage_dup2(int old_fd, int new_fd, char **path);

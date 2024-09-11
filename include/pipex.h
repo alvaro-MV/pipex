@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alvmoral <alvmoral@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 19:44:12 by alvaro            #+#    #+#             */
-/*   Updated: 2024/09/01 19:55:11 by alvaro           ###   ########.fr       */
+/*   Updated: 2024/09/11 13:26:05 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,11 @@
 # include <stdio.h>
 # include <sys/types.h>
 # include <sys/wait.h>
-# include "lib/include/libft.h"
+# include "../lib/include/libft.h"
 # include <fcntl.h>
 # include <linux/limits.h>
 # include "system_calls.h"
-# include "get_next_line.h"
+#include "../include/get_next_line.h"
 
 char	**get_path(char *env[]);
 void	call_pipe(char **path, char **argv);

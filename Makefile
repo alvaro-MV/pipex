@@ -1,11 +1,11 @@
-SRCS=pipex.c \
-     pipe.c \
-     heredoc.c \
-     system_calls.c \
-	 get_next_line.c \
-	 get_next_line_utils.c
+SRCS=src/pipex.c \
+     src/pipe.c \
+     src/heredoc.c \
+     src/system_calls.c \
+	 src/get_next_line.c \
+	 src/get_next_line_utils.c
 
-NORMAL_SRCS=$(SRCS) main.c
+NORMAL_SRCS=$(SRCS)
 TEST_SRCS=$(SRCS) test.c
 
 LIB_DIR=./lib

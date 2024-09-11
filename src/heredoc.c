@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alvmoral <alvmoral@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/27 13:49:00 by alvaro            #+#    #+#             */
-/*   Updated: 2024/09/01 19:00:39ro           ###   ########.fr       */
+/*   Created: 2024/09/11 13:22:49 by alvmoral          #+#    #+#             */
+/*   Updated: 2024/09/11 13:22:50 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "heredoc.h"
-#include "lib/include/libft.h"
+#include "../include/heredoc.h"
+#include "../lib/include/libft.h"
+#include "../include/get_next_line.h"
 
 void	execute_child_hd(char **argv, char **path, int pipefd[2])
 {

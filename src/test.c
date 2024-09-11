@@ -1,4 +1,4 @@
-#include "test.h"
+#include "../include/test.h"
 #include <string.h>
 
 static void test1() {

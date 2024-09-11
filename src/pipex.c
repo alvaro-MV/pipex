@@ -10,9 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
-#include "heredoc.h"
-#include "lib/include/libft.h"
+#include "../include/pipex.h"
+#include "../include/heredoc.h"
+#include "../lib/include/libft.h"
 
 char	**get_path(char *env[])
 {
@@ -52,8 +52,8 @@ void	call_here_doc(char **path, char **argv)
 	execute_pipe_hd(path, &argv[2], infile);
 }
 
-int	start(int argc, char *argv[], char *env[])
-{	
+int	main(int argc, char *argv[], char *env[])
+{
 	char	**path;
 
 	path = get_path(env);
@@ -74,5 +74,5 @@ int	start(int argc, char *argv[], char *env[])
 
 	ft_free_array(path);
 
-	return 0;
+	return (0);
 }

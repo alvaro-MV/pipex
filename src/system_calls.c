@@ -6,11 +6,11 @@
 /*   By: alvmoral <alvmoral@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 16:59:37 by alvmoral          #+#    #+#             */
-/*   Updated: 2024/08/20 18:11:08 by alvmoral         ###   ########.fr       */
+/*   Updated: 2024/09/11 13:23:37 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "system_calls.h"
+#include "../include/system_calls.h"
 
 int	manage_pipe(int pipefd[2], char **path)
 {
