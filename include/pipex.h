@@ -6,7 +6,7 @@
 /*   By: alvmoral <alvmoral@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 19:44:12 by alvaro            #+#    #+#             */
-/*   Updated: 2024/09/11 13:26:05 by alvmoral         ###   ########.fr       */
+/*   Updated: 2024/09/11 20:11:42 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@
 #include "../include/get_next_line.h"
 
 char	**get_path(char *env[]);
-void	call_pipe(char **path, char **argv);
-void	call_here_doc(char **path, char **argv);
+void	call_pipe(char **path, char **argv, int argc);
+void	call_here_doc(char **path, char **argv, int argc);
 
 void	bad_exec(int pipefd[2], char **arguments, char **path);
 char	*find_exec_in_path(char **path, char *exec);

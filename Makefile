@@ -14,7 +14,7 @@ LIBFT=./lib/libft.a
 
 NAME=pipex
 NAME_TEST= pipex_test
-CC=cc -Wall -Werror -Wextra
+CC=cc -Wall -Werror -Wextra -fsanitize=address
 
 ifeq ($(DEBUG), 1)
     DEBUGFLAGS =-g
