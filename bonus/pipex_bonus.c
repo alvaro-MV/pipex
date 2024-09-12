@@ -31,28 +31,56 @@ char	**get_path(char *env[])
 	return (path);
 }
 
+void	call_pipe(char **path, char **argv, int argc)
+{
+	int	infile;
+
+	if (argc < 5)
+	{
+		ft_printf("Incorrect format: ");
+		ft_printf("<infile command 1 ... command n outfile>\n");
+		return ;
+	}
+	if (checker_args(argv, argc, path) == 0)
+		return ;
+	infile = open(argv[0], O_RDONLY);
+	if (infile == -1)
+		return (perror(""), exit(-1));
+	argv++;
+	execute_pipe(path, argv, infile);
+}
+
+void	call_here_doc(char **path, char **argv, int argc)
+{
+	int	infile;
+
+	if (argc < 5)
+	{
+		ft_printf("Incorrect format: ");
+		ft_printf("./pipex here_doc DEL command 1 command 2 outfile>\n");
+		return ;
+	}
+	argv++;
+	if (checker_args(argv, argc, path) == 0)
+		return ;
+	infile = here_doc(argv[0], path);
+	if (infile == -1)
+		return (perror("Bad file desciptor"), exit(-1));
+	execute_pipe_hd(path, &argv[1], infile);
+}
+
 int	main(int argc, char *argv[], char *env[])
 {
 	char	**path;
-	int		infile;
 
 	path = get_path(env);
 	if (path == NULL)
 		return (1);
 	argv++;
-	if (argc < 5)
-	{
-		ft_printf("Incorrect format: ");
-		ft_printf("<infile command 1 ... command n outfile>\n");
-		return (1);
-	}
-	if (checker_args(argv, argc, path) == 0)
-		return (1);
-	infile = open(argv[0], O_RDONLY);
-	if (infile == -1)
-		(perror("Bad file desciptor"), exit(-1));
-	argv++;
-	execute_pipe(path, argv, infile);
+	if (ft_strcmp(argv[0], "here_doc") != 0)
+		call_pipe(path, argv, argc);
+	else
+		call_here_doc(path, argv, argc);	
 	ft_free_array(path);
 	return (0);
 }

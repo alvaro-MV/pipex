@@ -6,7 +6,7 @@
 /*   By: alvmoral <alvmoral@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 13:22:49 by alvmoral          #+#    #+#             */
-/*   Updated: 2024/09/11 13:22:50 by alvmoral         ###   ########.fr       */
+/*   Updated: 2024/09/12 17:47:24 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ void	execute_child_hd(char **argv, char **path, int pipefd[2])
 		if (file_fd == -1)
 			return (perror(argv[1]), ft_free_array(path), exit (-1));
 		manage_dup2(file_fd, 1, path);
-		//close(file_fd);
 	}
 	close(pipefd[1]);
 	close(pipefd[0]);
@@ -87,6 +86,7 @@ int	here_doc(char *delimiter, char **path)
 			free(next_line);
 			break ;
 		}
+		ft_printf("> ");
 		write(infd[1], next_line, ft_strlen(next_line));
 		free(next_line);
 	}

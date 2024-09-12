@@ -1,33 +1,34 @@
 SRCS=src/pipex.c \
      src/pipe.c \
-     src/heredoc.c \
      src/system_calls.c \
-	 src/get_next_line.c \
-	 src/get_next_line_utils.c \
 	 src/checker_args.c
 
-NORMAL_SRCS=$(SRCS)
-TEST_SRCS=$(SRCS) test.c
+SRCS_BONUS=bonus/get_next_line_bonus.c \
+	 	   bonus/get_next_line_utils_bonus.c \
+		   bonus/heredoc.c \
+		   bonus/pipex_bonus.c \
+		   bonus/pipe_bonus.c \
+		   bonus/system_calls_bonus.c \
+		   bonus/checker_args_bonus.c
 
 LIB_DIR=./lib
-LIB_SRCS=$(wildcard $(LIB_DIR)/*.c)
 LIBFT=./lib/libft.a
 
 NAME=pipex
-NAME_TEST= pipex_test
-CC=cc -Wall -Werror -Wextra -fsanitize=address
+NAME_BONUS= pipex_bonus
+CC=cc -Wall -Werror -Wextra
 
 ifeq ($(DEBUG), 1)
     DEBUGFLAGS =-g
 endif
 
-OBJ=$(patsubst %.c, %.o, $(NORMAL_SRCS))
-OBJ_TEST=$(patsubst %.c, %.o, $(TEST_SRCS))
+OBJ=$(patsubst %.c, %.o, $(SRCS))
+OBJ_BONUS=$(patsubst %.c, %.o, $(SRCS_BONUS))
 
-all: $(LIBFT) $(NAME)
+all: $(NAME)
 
-$(LIBFT): $(LIB_SRCS)
-	@make -C $(LIB_DIR)
+$(LIBFT):
+	@make -Cs $(LIB_DIR)
 
 %.o: %.c
 	$(CC)  -c $< -o $@ $(DEBUGFLAGS)
@@ -35,21 +36,20 @@ $(LIBFT): $(LIB_SRCS)
 $(NAME): $(OBJ)
 	$(CC) $(OBJ) $(LIBFT) -o $@ $(DEBUGFLAGS)
 
-$(NAME_TEST): $(OBJ_TEST)
-	$(CC) $(OBJ_TEST) $(LIBFT) -o $@ $(DEBUGFLAGS)
+$(NAME_BONUS): $(OBJ_BONUS)
+	$(CC) $(OBJ_BONUS) $(LIBFT) -o $@ $(DEBUGFLAGS)
 
-test: $(NAME_TEST)
-	./$(NAME_TEST)
+bonus: $(NAME_BONUS)
 
 clean:
-	rm -rf $(OBJ) $(OBJ_TEST)
+	rm -rf $(OBJ) $(OBJ_BONUS)
 fclean:
-	rm -rf $(OBJ) $(OBJ_TEST) $(NAME)
+	rm -rf $(OBJ) $(OBJ_BONUS) $(NAME)
 
 re:
-	@make fclean
+	@make -s fclean
 	@make all
 norm: 
 	norminette $(SRCS)
 
-.PHONY:all clean fclean re norm test
+.PHONY:all clean fclean re norm bonus
