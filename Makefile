@@ -3,7 +3,8 @@ SRCS=src/pipex.c \
      src/heredoc.c \
      src/system_calls.c \
 	 src/get_next_line.c \
-	 src/get_next_line_utils.c
+	 src/get_next_line_utils.c \
+	 src/checker_args.c
 
 NORMAL_SRCS=$(SRCS)
 TEST_SRCS=$(SRCS) test.c

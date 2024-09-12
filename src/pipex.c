@@ -39,9 +39,11 @@ void	call_pipe(char **path, char **argv, int argc)
 	{
 		ft_printf("Incorrect format: ");
 		ft_printf("<infile command 1 ... command n outfile>\n");
-		exit(1);
+		return ;
 	}
-	infile = open(argv[0], O_RDONLY | O_EXCL);
+	if (checker_args(argv, argc, path) == 0)
+		return ;
+	infile = open(argv[0], O_RDONLY);
 	if (infile == -1)
 		return (perror("Bad file desciptor"), exit(-1));
 	argv++;
@@ -52,12 +54,14 @@ void	call_here_doc(char **path, char **argv, int argc)
 {
 	int	infile;
 
-	if (argc != 5)
+	if (argc < 5)
 	{
 		ft_printf("Incorrect format: ");
 		ft_printf("./pipex here_doc DEL command 1 command 2 outfile>\n");
-		exit(1);
+		return ;
 	}
+	if (checker_args(argv, argc, path) == 0)
+		return ;
 	infile = here_doc(argv[1], path);
 	if (infile == -1)
 		return (perror("Bad file desciptor"), exit(-1));
@@ -76,8 +80,6 @@ int	main(int argc, char *argv[], char *env[])
 		call_pipe(path, argv, argc);
 	else
 		call_here_doc(path, argv, argc);	
-
 	ft_free_array(path);
-
 	return (0);
 }

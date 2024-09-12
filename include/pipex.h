@@ -6,7 +6,7 @@
 /*   By: alvmoral <alvmoral@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 19:44:12 by alvaro            #+#    #+#             */
-/*   Updated: 2024/09/11 20:11:42 by alvmoral         ###   ########.fr       */
+/*   Updated: 2024/09/12 15:20:13 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,14 @@
 # include <fcntl.h>
 # include <linux/limits.h>
 # include "system_calls.h"
-#include "../include/get_next_line.h"
+# include "../include/get_next_line.h"
 
 char	**get_path(char *env[]);
 void	call_pipe(char **path, char **argv, int argc);
+int		checker_args(char **argv, int argc, char **path);
 void	call_here_doc(char **path, char **argv, int argc);
 
+int		exec_exist(char **path, char *exec);
 void	bad_exec(int pipefd[2], char **arguments, char **path);
 char	*find_exec_in_path(char **path, char *exec);
 void	execute_child(char **argv, char **path, int pipefd[2]);
@@ -36,5 +38,4 @@ void	execute_pipe(char **path, char **argv, int infd);
 
 char	*get_next_line(int fd);
 
-int	start(int argc, char *argv[], char *env[]);
 #endif
