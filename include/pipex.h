@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvmoral <alvmoral@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 19:44:12 by alvaro            #+#    #+#             */
-/*   Updated: 2024/09/12 16:39:07 by alvmoral         ###   ########.fr       */
+/*   Updated: 2024/09/16 09:33:58 by alvaro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 # include "../include/get_next_line.h"
 
 char	**get_path(char *env[]);
-int		checker_args(char **argv, int argc, char **path);
+void	checker_args(char **argv, int argc, char **path);
 
 int		exec_exist(char **path, char *exec);
 void	bad_exec(int pipefd[2], char **arguments, char **path);

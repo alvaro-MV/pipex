@@ -46,11 +46,10 @@ int	main(int argc, char *argv[], char *env[])
 		ft_printf("<infile command 1 ... command n outfile>\n");
 		return (1);
 	}
-	if (checker_args(argv, argc, path) == 0)
-		return (1);
+	//checker_args(argv, argc, path);
 	infile = open(argv[0], O_RDONLY);
 	if (infile == -1)
-		(perror("Bad file desciptor"), exit(-1));
+		ft_printf("%s: No such file or directory\n", argv[0]);
 	argv++;
 	execute_pipe(path, argv, infile);
 	ft_free_array(path);

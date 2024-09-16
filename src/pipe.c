@@ -47,7 +47,8 @@ void	bad_exec(int pipefd[2], char **arguments, char **path)
 	close(pipefd[0]);
 	ft_free_array(arguments);
 	ft_free_array(path);
-	perror("Bad executable");
+	perror(arguments[0]);
+	perror(": command not found.\n");
 	exit(-1);
 }
 
@@ -88,7 +89,8 @@ void	execute_pipe(char **path, char **argv, int infd)
 	int		fdd;
 
 	fdd = 0;
-	manage_dup2(infd, 0, path);
+	if (infd == - 1)
+		manage_dup2(infd, 0, path);
 	close(infd);
 	while (argv[1] != NULL)
 	{

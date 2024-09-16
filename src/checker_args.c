@@ -51,7 +51,7 @@ static	char	**get_arguments(char *raw_exec)
 	return (arguments);
 }
 
-int	checker_args(char **argv, int argc, char **path)
+void	checker_args(char **argv, int argc, char **path)
 {
 	int		i;
 	int		infile;
@@ -60,22 +60,14 @@ int	checker_args(char **argv, int argc, char **path)
 	i = 1;
 	infile = open(argv[0], O_EXCL);
 	if (infile == -1)
-	{
-		ft_printf("No such file or directory");
-		return (0);
-	}
+		ft_printf("%s: No such file or directory\n", argv[0]);
 	close(infile);
 	while (i < argc - 2)
 	{
 		arguments = get_arguments(argv[i]);
 		if (!exec_exist(path, arguments[0]))
-		{
 			ft_printf("%s: command not found.\n", arguments[0]);
-			ft_free_array(arguments);
-			return (0);
-		}
 		ft_free_array(arguments);
 		i++;
 	}
-	return (1);
 }

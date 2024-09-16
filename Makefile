@@ -1,7 +1,6 @@
 SRCS=src/pipex.c \
      src/pipe.c \
      src/system_calls.c \
-	 src/checker_args.c
 
 SRCS_BONUS=bonus/get_next_line_bonus.c \
 	 	   bonus/get_next_line_utils_bonus.c \
@@ -22,8 +21,8 @@ ifeq ($(DEBUG), 1)
     DEBUGFLAGS =-g
 endif
 
-OBJ=$(patsubst %.c, %.o, $(SRCS))
-OBJ_BONUS=$(patsubst %.c, %.o, $(SRCS_BONUS))
+OBJ=$(SRCS:.c=.o)
+OBJ_BONUS=$(SRCS_BONUS:.c=.o)
 
 all: $(NAME)
 
@@ -44,7 +43,7 @@ bonus: $(NAME_BONUS)
 clean:
 	rm -rf $(OBJ) $(OBJ_BONUS)
 fclean:
-	rm -rf $(OBJ) $(OBJ_BONUS) $(NAME)
+	rm -rf $(OBJ) $(OBJ_BONUS) $(NAME) $(NAME_BONUS)
 
 re:
 	@make -s fclean

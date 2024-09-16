@@ -8,4 +8,9 @@ ft_printf --> Donde se sacan los errores de los arhivos.
 
 Ponerlos en checker_pipe
 
+--------------------
+
+exit: errores en función del status: imitar a bash.
+
+
 
