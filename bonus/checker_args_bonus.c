@@ -51,7 +51,7 @@ static	char	**get_arguments(char *raw_exec)
 	return (arguments);
 }
 
-int	checker_args(char **argv, int argc, char **path)
+void	checker_args(char **argv, int argc, char **path)
 {
 	int		i;
 	char	**arguments;
@@ -61,13 +61,8 @@ int	checker_args(char **argv, int argc, char **path)
 	{
 		arguments = get_arguments(argv[i]);
 		if (!exec_exist(path, arguments[0]))
-		{
-			ft_printf("Bad executable.");
-			ft_free_array(arguments);
-			return (0);
-		}
+			ft_printf("%s: command not found.\n", arguments[0]);
 		ft_free_array(arguments);
 		i++;
 	}
-	return (1);
 }

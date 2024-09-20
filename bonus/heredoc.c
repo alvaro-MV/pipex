@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvmoral <alvmoral@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 13:22:49 by alvmoral          #+#    #+#             */
-/*   Updated: 2024/09/12 17:47:24 by alvmoral         ###   ########.fr       */
+/*   Updated: 2024/09/20 18:48:07by alvaro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,6 @@ void	execute_child_hd(char **argv, char **path, int pipefd[2])
 
 	arguments = ft_split(*argv, ' ');
 	arguments[0] = find_exec_in_path(path, arguments[0]);
-	if (arguments[0] == NULL)
-		bad_exec(pipefd, arguments, path);
 	if (argv[2] != NULL)
 		manage_dup2(pipefd[1], 1, path);
 	else
@@ -35,6 +33,8 @@ void	execute_child_hd(char **argv, char **path, int pipefd[2])
 	close(pipefd[1]);
 	close(pipefd[0]);
 	ft_free_array(path);
+	if (arguments[0] == NULL)
+		bad_exec(pipefd, arguments, argv, path);
 	execve(arguments[0], arguments, NULL);
 	(perror("execve"), exit(-1));
 }
@@ -59,6 +59,7 @@ void	execute_pipe_hd(char **path, char **argv, int infd)
 		else
 		{
 			wait(&status);
+			ft_printf("status: %d\n", status);
 			close(pipefd[1]);
 			fdd = pipefd[0];
 			++argv;
@@ -80,13 +81,13 @@ int	here_doc(char *delimiter, char **path)
 	}
 	while (1)
 	{
+		ft_printf("> ");
 		next_line = get_next_line(0);
 		if (ft_strcmp(next_line, delimiter) == 0)
 		{
 			free(next_line);
 			break ;
 		}
-		ft_printf("> ");
 		write(infd[1], next_line, ft_strlen(next_line));
 		free(next_line);
 	}

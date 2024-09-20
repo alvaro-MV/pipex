@@ -38,17 +38,18 @@ char	*find_exec_in_path(char **path, char *exec)
 			path++;
 		}
 	}
-	return (free(exec), NULL);
+	return (NULL);
 }
 
-void	bad_exec(int pipefd[2], char **arguments, char **path)
+void	bad_exec(int pipefd[2], char **arguments, char **argv, char **path)
 {
+	ft_putstr_fd(argv[0], 2);
+	perror(": command not found.\n");
 	close(pipefd[1]);
 	close(pipefd[0]);
 	ft_free_array(arguments);
 	ft_free_array(path);
-	perror("Bad executable");
-	exit(-1);
+	exit(1); //Mirar codigos de error
 }
 
 /* 
@@ -62,8 +63,6 @@ void	execute_child(char **argv, char **path, int pipefd[2])
 
 	arguments = ft_split(*argv, ' ');
 	arguments[0] = find_exec_in_path(path, arguments[0]);
-	if (arguments[0] == NULL)
-		bad_exec(pipefd, arguments, path);
 	if (argv[2] != NULL)
 		manage_dup2(pipefd[1], 1, path);
 	else
@@ -77,6 +76,8 @@ void	execute_child(char **argv, char **path, int pipefd[2])
 	close(pipefd[1]);
 	close(pipefd[0]);
 	ft_free_array(path);
+	if (arguments[0] == NULL)
+		bad_exec(pipefd, arguments, argv, path);
 	execve(arguments[0], arguments, NULL);
 	(perror("execve"), exit(-1));
 }

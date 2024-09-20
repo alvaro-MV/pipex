@@ -46,7 +46,7 @@ int	main(int argc, char *argv[], char *env[])
 		ft_printf("<infile command 1 ... command n outfile>\n");
 		return (1);
 	}
-	//checker_args(argv, argc, path);
+	checker_args(argv, argc, path);
 	infile = open(argv[0], O_RDONLY);
 	if (infile == -1)
 		ft_printf("%s: No such file or directory\n", argv[0]);

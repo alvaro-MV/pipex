@@ -41,11 +41,10 @@ void	call_pipe(char **path, char **argv, int argc)
 		ft_printf("<infile command 1 ... command n outfile>\n");
 		return ;
 	}
-	if (checker_args(argv, argc, path) == 0)
-		return ;
+	//checker_args(argv, argc, path);
 	infile = open(argv[0], O_RDONLY);
 	if (infile == -1)
-		return (perror(""), exit(-1));
+		return (ft_printf("%s: no such file or directory.", argv[0]), exit(-1));
 	argv++;
 	execute_pipe(path, argv, infile);
 }
@@ -61,8 +60,8 @@ void	call_here_doc(char **path, char **argv, int argc)
 		return ;
 	}
 	argv++;
-	if (checker_args(argv, argc, path) == 0)
-		return ;
+	argc--;
+	//checker_args(argv, argc, path);
 	infile = here_doc(argv[0], path);
 	if (infile == -1)
 		return (perror("Bad file desciptor"), exit(-1));

@@ -1,6 +1,7 @@
 SRCS=src/pipex.c \
      src/pipe.c \
      src/system_calls.c \
+	 src/checker_args.c
 
 SRCS_BONUS=bonus/get_next_line_bonus.c \
 	 	   bonus/get_next_line_utils_bonus.c \
