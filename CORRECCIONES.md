@@ -23,3 +23,8 @@ cat << $PATH | cat -e liliput :--> resultado: /usr/local/sbin:/usr/local/bin:/us
 ## Caso 3: sleep
 
 sleep 2 | sleep 2: solo pasan dos segundos.
+
+
+## Caso 4: sleep | echo $?
+
+	Primero saca 0 y luego espera dos segundos. El 0 asumimos que es del anterior proceso, como se demuestra poniendo antes un comando que no existe. Pero claro, puede ser que sleep se haya ido a sobar, pero sobar significa.
