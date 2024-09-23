@@ -41,15 +41,15 @@ char	*find_exec_in_path(char **path, char *exec)
 	return (free(exec), NULL);
 }
 
-void	bad_exec(int pipefd[2], char **arguments, char **path)
+void	bad_exec(int pipefd[2], char **arguments, char **argv, char **path)
 {
+	ft_putstr_fd(argv[0], 2);
+	perror(": command not found.\n");
 	close(pipefd[1]);
 	close(pipefd[0]);
 	ft_free_array(arguments);
 	ft_free_array(path);
-	perror(arguments[0]);
-	perror(": command not found.\n");
-	exit(-1);
+	exit(1); //Mirar codigos de error
 }
 
 /* 
@@ -64,7 +64,7 @@ void	execute_child(char **argv, char **path, int pipefd[2])
 	arguments = ft_split(*argv, ' ');
 	arguments[0] = find_exec_in_path(path, arguments[0]);
 	if (arguments[0] == NULL)
-		bad_exec(pipefd, arguments, path);
+		bad_exec(pipefd, arguments, argv, path);
 	if (argv[2] != NULL)
 		manage_dup2(pipefd[1], 1, path);
 	else
