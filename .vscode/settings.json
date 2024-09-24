@@ -5,6 +5,8 @@
         "pipex.h": "c",
         "heredoc.h": "c",
         "system_calls.h": "c",
-        "get_next_line.h": "c"
+        "get_next_line.h": "c",
+        "unistd.h": "c",
+        "stdlib.h": "c"
     }
 }

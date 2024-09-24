@@ -82,31 +82,27 @@ void	execute_child(char **argv, char **path, int pipefd[2])
 	(perror("execve"), exit(-1));
 }
 
-void	execute_pipe(char **path, char **argv, int infd)
+void	execute_pipe(t_pipe *pipex)
 {
-	int		pipefd[2];
-	int		status;
-	int		fdd;
+	int cmd_idx;
 
-	fdd = 0;
-	if (infd == - 1)
-		manage_dup2(infd, 0, path);
-	close(infd);
-	while (argv[1] != NULL)
+	cmd_idx = 0;
+	if (pipex->infile == - 1)
+		manage_dup2(pipex->infile, 0, pipex->path);
+	close(pipex->infile);
+	while (pipex->argv[1] != NULL)
 	{
-		manage_pipe(pipefd, path);
-		if (ffork(path) == 0)
+		if (ffork(pipex->path) == 0)
 		{
-			manage_dup2(fdd, 0, path);
-			execute_child(argv, path, pipefd);
-			free(*argv);
+			if (cmd_idx > 0)
+				manage_dup2(pipex->pipefds[2 * cmd_idx], 0, pipex->path);
+			execute_child(pipex->argv, pipex->path, pipex->pipefds);
+			free(*(pipex->argv));
 		}
 		else
 		{
-			wait(&status);
-			close(pipefd[1]);
-			fdd = pipefd[0];
-			++argv;
+			++pipex->argv;
+			++cmd_idx;
 		}
 	}
 }

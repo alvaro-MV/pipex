@@ -28,3 +28,6 @@ sleep 2 | sleep 2: solo pasan dos segundos.
 ## Caso 4: sleep | echo $?
 
 	Primero saca 0 y luego espera dos segundos. El 0 asumimos que es del anterior proceso, como se demuestra poniendo antes un comando que no existe. Pero claro, puede ser que sleep se haya ido a sobar, pero sobar significa.
+
+## Caso 5: cat << l infile | wc >> outfile
+	Este caso ejecuta el heredoc, para posteriormente sudarle la polla y utilizar el contenido de infile que es el que traslada a la pipe. En este comportamiento, la pipe que se usa para implementar el heredoc puede salir en desventaja frente a usar un archivo, aunque en realidad da igual, porque en vez de leer de una pipe lee del archivo temporal y a tomar por el culo.

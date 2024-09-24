@@ -31,14 +31,29 @@ char	**get_path(char *env[])
 	return (path);
 }
 
+int	*set_pipefds(t_pipe *pipex, int n_pipes, int argc)
+{
+	int	i;
+	int	*pipefds;
+	int	*next_pipe;
+
+	i = 0;
+	pipefds = (int *) malloc(sizeof(int) * 2 * (argc - 3));
+	if (pipefds == NULL)
+		return (NULL);
+	while (i < n_pipes - 3)
+	{
+		next_pipe = &pipex->pipefds[2 * i];
+		manage_pipe(next_pipe, pipex->path);
+		i++;
+	}
+	return (pipefds);
+}
+
 int	main(int argc, char *argv[], char *env[])
 {
-	char	**path;
-	int		infile;
+	t_pipe	pipex;
 
-	path = get_path(env);
-	if (path == NULL)
-		return (1);
 	argv++;
 	if (argc < 5)
 	{
@@ -46,12 +61,19 @@ int	main(int argc, char *argv[], char *env[])
 		ft_printf("<infile command 1 ... command n outfile>\n");
 		return (1);
 	}
-	checker_args(argv, argc, path);
-	infile = open(argv[0], O_RDONLY);
-	if (infile == -1)
+	pipex.path = get_path(env);
+	if (pipex.path == NULL)
+		return (1);
+	pipex.pipefds = set_pipefds(&pipex, argc - 3, argc);
+	if (pipex.pipefds == NULL)
+		return (1);
+	pipex.infile = open(argv[0], O_RDONLY);
+	if (pipex.infile == -1)
 		ft_printf("%s: No such file or directory\n", argv[0]);
 	argv++;
-	execute_pipe(path, argv, infile);
-	ft_free_array(path);
+	pipex.argv = argv;
+	execute_pipe(&pipex);
+	waitpid(-1, NULL, 0);
+	ft_free_array(pipex.path);
 	return (0);
 }
