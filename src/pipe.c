@@ -60,12 +60,21 @@ void	execute_child(t_pipe *pipex, int cmd_idx)
 	char	**arguments;
 	int		file_fd;
 	int		*pipe_pos;
+	char testeo[100]; //testeo
 
 	arguments = ft_split(*pipex->argv, ' ');
 	arguments[0] = find_exec_in_path(pipex->path, arguments[0]);
 	if (arguments[0] == NULL)
 		bad_exec(pipex, arguments);
 	pipe_pos = pipex->pipefds + (2 * cmd_idx);
+	//testeo
+	if (cmd_idx > 0)
+	{
+		read(*pipe_pos - 2, testeo, 9);
+		ft_printf("testeo: %s\n", testeo);
+		lseek(*pipe_pos - 2, 0, SEEK_SET);
+	}
+	//testeo
 	if (pipex->argv[2] != NULL)
 		manage_dup2(*(pipe_pos + 1), 1, pipex->path);
 	else
