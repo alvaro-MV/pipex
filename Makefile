@@ -27,13 +27,11 @@ OBJ_BONUS=$(SRCS_BONUS:.c=.o)
 
 all: $(NAME)
 
-$(LIBFT):
-	@make -Cs $(LIB_DIR)
-
 %.o: %.c
 	$(CC)  -c $< -o $@ $(DEBUGFLAGS)
 
 $(NAME): $(OBJ)
+	@make -C $(LIB_DIR)
 	$(CC) $(OBJ) $(LIBFT) -o $@ $(DEBUGFLAGS)
 
 $(NAME_BONUS): $(OBJ_BONUS)

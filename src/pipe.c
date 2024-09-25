@@ -41,43 +41,44 @@ char	*find_exec_in_path(char **path, char *exec)
 	return (free(exec), NULL);
 }
 
-void	bad_exec(int pipefd[2], char **arguments, char **argv, char **path)
+void	bad_exec(t_pipe *pipex, char **arguments)
 {
-	ft_putstr_fd(argv[0], 2);
+	ft_putstr_fd(pipex->argv[0], 2);
 	perror(": command not found.\n");
-	close(pipefd[1]);
-	close(pipefd[0]);
+	close_pipefds(pipex, pipex->n_pipes);
 	ft_free_array(arguments);
-	ft_free_array(path);
-	exit(1); //Mirar codigos de error
+	ft_free_array(pipex->path);
+	exit(1);
 }
 
 /* 
 	bad exec, mal orden, que el archivo de redireccion no exista, 
  */
 
-void	execute_child(char **argv, char **path, int pipefd[2])
+void	execute_child(t_pipe *pipex, int cmd_idx)
 {
 	char	**arguments;
 	int		file_fd;
+	int		*pipe_pos;
 
-	arguments = ft_split(*argv, ' ');
-	arguments[0] = find_exec_in_path(path, arguments[0]);
+	arguments = ft_split(*pipex->argv, ' ');
+	arguments[0] = find_exec_in_path(pipex->path, arguments[0]);
 	if (arguments[0] == NULL)
-		bad_exec(pipefd, arguments, argv, path);
-	if (argv[2] != NULL)
-		manage_dup2(pipefd[1], 1, path);
+		bad_exec(pipex, arguments);
+	pipe_pos = pipex->pipefds + (2 * cmd_idx);
+	if (pipex->argv[2] != NULL)
+		manage_dup2(*(pipe_pos + 1), 1, pipex->path);
 	else
 	{
-		file_fd = open(argv[1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		file_fd = open(pipex->argv[1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		ft_free_array(pipex->path);
 		if (file_fd == -1)
-			return (perror(argv[1]), ft_free_array(path), exit (-1));
-		manage_dup2(file_fd, 1, path);
+			return (perror(pipex->argv[1]), exit(-1));
+		manage_dup2(file_fd, 1, pipex->path);
 		close(file_fd);
 	}
-	close(pipefd[1]);
-	close(pipefd[0]);
-	ft_free_array(path);
+	close_pipefds(pipex, pipex->n_pipes);
+	ft_free_array(pipex->path);
 	execve(arguments[0], arguments, NULL);
 	(perror("execve"), exit(-1));
 }
@@ -85,6 +86,7 @@ void	execute_child(char **argv, char **path, int pipefd[2])
 void	execute_pipe(t_pipe *pipex)
 {
 	int cmd_idx;
+	int	*pipe_pos;
 
 	cmd_idx = 0;
 	if (pipex->infile == - 1)
@@ -94,9 +96,10 @@ void	execute_pipe(t_pipe *pipex)
 	{
 		if (ffork(pipex->path) == 0)
 		{
+			pipe_pos = pipex->pipefds + (2 * cmd_idx);
 			if (cmd_idx > 0)
-				manage_dup2(pipex->pipefds[2 * cmd_idx], 0, pipex->path);
-			execute_child(pipex->argv, pipex->path, pipex->pipefds);
+				manage_dup2(*pipe_pos - 2, 0, pipex->path);
+			execute_child(pipex, cmd_idx);
 			free(*(pipex->argv));
 		}
 		else
@@ -105,4 +108,5 @@ void	execute_pipe(t_pipe *pipex)
 			++cmd_idx;
 		}
 	}
+	close_pipefds(pipex, pipex->n_pipes);
 }

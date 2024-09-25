@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "../include/pipex.h"
-#include "../include/heredoc.h"
 #include "../lib/include/libft.h"
 
 char	**get_path(char *env[])
@@ -31,23 +30,38 @@ char	**get_path(char *env[])
 	return (path);
 }
 
-int	*set_pipefds(t_pipe *pipex, int n_pipes, int argc)
+static int	*set_pipefds(t_pipe *pipex, int n_pipes)
 {
 	int	i;
 	int	*pipefds;
 	int	*next_pipe;
 
 	i = 0;
-	pipefds = (int *) malloc(sizeof(int) * 2 * (argc - 3));
+	pipefds = (int *) malloc(sizeof(int) * 2 * n_pipes);
 	if (pipefds == NULL)
 		return (NULL);
-	while (i < n_pipes - 3)
+	while (i < n_pipes)
 	{
-		next_pipe = &pipex->pipefds[2 * i];
+		next_pipe = pipefds + (2 * i);
 		manage_pipe(next_pipe, pipex->path);
 		i++;
 	}
 	return (pipefds);
+}
+
+void	close_pipefds(t_pipe *pipex, int n_pipes)
+{
+	int	i;
+	int	*next_pipe;
+
+	i = 0;
+	while (i < n_pipes)
+	{
+		next_pipe = pipex->pipefds + (2 * i);
+		close(next_pipe[0]);
+		close(next_pipe[1]);
+		i++;
+	}
 }
 
 int	main(int argc, char *argv[], char *env[])
@@ -61,10 +75,11 @@ int	main(int argc, char *argv[], char *env[])
 		ft_printf("<infile command 1 ... command n outfile>\n");
 		return (1);
 	}
+	pipex.n_pipes = argc - 3;
 	pipex.path = get_path(env);
 	if (pipex.path == NULL)
 		return (1);
-	pipex.pipefds = set_pipefds(&pipex, argc - 3, argc);
+	pipex.pipefds = set_pipefds(&pipex, argc - 3);
 	if (pipex.pipefds == NULL)
 		return (1);
 	pipex.infile = open(argv[0], O_RDONLY);
