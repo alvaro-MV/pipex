@@ -58,7 +58,7 @@ void	bad_exec(t_pipe *pipex, char **arguments)
 void	execute_child(t_pipe *pipex, int cmd_idx)
 {
 	char	**arguments;
-	int		file_fd;
+	int		out_fd;
 	int		*pipe_pos;
 	char testeo[100]; //testeo
 
@@ -70,21 +70,21 @@ void	execute_child(t_pipe *pipex, int cmd_idx)
 	//testeo
 	if (cmd_idx > 0)
 	{
-		read(*pipe_pos - 2, testeo, 9);
+		read(0, testeo, 9);
 		ft_printf("testeo: %s\n", testeo);
-		lseek(*pipe_pos - 2, 0, SEEK_SET);
+		lseek(0, 0, SEEK_SET);
 	}
 	//testeo
 	if (pipex->argv[2] != NULL)
 		manage_dup2(*(pipe_pos + 1), 1, pipex->path);
 	else
 	{
-		file_fd = open(pipex->argv[1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		out_fd = open(pipex->argv[1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
 		ft_free_array(pipex->path);
-		if (file_fd == -1)
+		if (out_fd == -1)
 			return (perror(pipex->argv[1]), exit(-1));
-		manage_dup2(file_fd, 1, pipex->path);
-		close(file_fd);
+		manage_dup2(out_fd, 1, pipex->path);
+		close(out_fd);
 	}
 	close_pipefds(pipex, pipex->n_pipes);
 	ft_free_array(pipex->path);
