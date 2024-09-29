@@ -60,7 +60,7 @@ void	execute_child(t_pipe *pipex, int cmd_idx)
 	char	**arguments;
 	int		out_fd;
 	int		*pipe_pos;
-	char testeo[100]; //testeo
+	char 	testeo[100]; //testeo
 
 	arguments = ft_split(*pipex->argv, ' ');
 	arguments[0] = find_exec_in_path(pipex->path, arguments[0]);
@@ -80,14 +80,15 @@ void	execute_child(t_pipe *pipex, int cmd_idx)
 	else
 	{
 		out_fd = open(pipex->argv[1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
-		ft_free_array(pipex->path);
 		if (out_fd == -1)
 			return (perror(pipex->argv[1]), exit(-1));
 		manage_dup2(out_fd, 1, pipex->path);
+		ft_printf("Pero entraaaa\n");
 		close(out_fd);
 	}
 	close_pipefds(pipex, pipex->n_pipes);
 	ft_free_array(pipex->path);
+	ft_printf("Hasta donde llega\n");
 	execve(arguments[0], arguments, NULL);
 	(perror("execve"), exit(-1));
 }
@@ -101,7 +102,7 @@ void	execute_pipe(t_pipe *pipex)
 	if (pipex->infile == - 1)
 		manage_dup2(pipex->infile, 0, pipex->path);
 	close(pipex->infile);
-	while (pipex->argv[1] != NULL)
+	while (pipex->argv[2] != NULL)
 	{
 		if (ffork(pipex->path) == 0)
 		{
