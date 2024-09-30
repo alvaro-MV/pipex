@@ -31,3 +31,15 @@ sleep 2 | sleep 2: solo pasan dos segundos.
 
 ## Caso 5: cat << l infile | wc >> outfile
 	Este caso ejecuta el heredoc, para posteriormente sudarle la polla y utilizar el contenido de infile que es el que traslada a la pipe. En este comportamiento, la pipe que se usa para implementar el heredoc puede salir en desventaja frente a usar un archivo, aunque en realidad da igual, porque en vez de leer de una pipe lee del archivo temporal y a tomar por el culo.
+
+
+## Caso 6: parseo: ./pipex_bonus infile "ls" "cat" out
+
+## Caso 7: parseo:  ./pipex_bonus infile "" cat out 
+	zsh: no such file or directory: ./pipex_bonus. Saca sisgev con fsanitize.
+
+## Caso 8: parseo: ./pipex_bonus infile "" cat out
+	No hace nada, mirar fsanize.
+
+## Caso 9: parseo: ./pipex/pipex_bonus 11 11 11 11 hola
+	No crea el archivo hola, no crea el archivo hola, no saca un log para cada directorio.

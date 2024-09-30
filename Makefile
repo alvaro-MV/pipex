@@ -16,7 +16,7 @@ LIBFT=./lib/libft.a
 
 NAME=pipex
 NAME_BONUS= pipex_bonus
-CC=cc -Wall -Werror -Wextra
+CC=cc -Wall -Werror -Wextra 
 
 ifeq ($(DEBUG), 1)
     DEBUGFLAGS =-g
