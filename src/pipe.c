@@ -60,21 +60,12 @@ void	execute_child(t_pipe *pipex, int cmd_idx)
 	char	**arguments;
 	int		out_fd;
 	int		*pipe_pos;
-	char 	testeo[100]; //testeo
 
 	arguments = ft_split(*pipex->argv, ' ');
 	arguments[0] = find_exec_in_path(pipex->path, arguments[0]);
 	if (arguments[0] == NULL)
 		bad_exec(pipex, arguments);
 	pipe_pos = pipex->pipefds + (2 * cmd_idx);
-	//testeo
-	if (cmd_idx > 0)
-	{
-		read(0, testeo, 9);
-		ft_printf("testeo: %s\n", testeo);
-		lseek(0, 0, SEEK_SET);
-	}
-	//testeo
 	if (pipex->argv[2] != NULL)
 		manage_dup2(*(pipe_pos + 1), 1, pipex->path);
 	else
@@ -83,37 +74,41 @@ void	execute_child(t_pipe *pipex, int cmd_idx)
 		if (out_fd == -1)
 			return (perror(pipex->argv[1]), exit(-1));
 		manage_dup2(out_fd, 1, pipex->path);
-		ft_printf("Pero entraaaa\n");
 		close(out_fd);
 	}
 	close_pipefds(pipex, pipex->n_pipes);
 	ft_free_array(pipex->path);
-	ft_printf("Hasta donde llega\n");
 	execve(arguments[0], arguments, NULL);
 	(perror("execve"), exit(-1));
 }
 
 void	execute_pipe(t_pipe *pipex)
 {
-	int cmd_idx;
-	int	*pipe_pos;
+	int 	cmd_idx;
+	int		*pipe_pos;
+	pid_t	pid;
+	int		status;
 
 	cmd_idx = 0;
 	if (pipex->infile == - 1)
 		manage_dup2(pipex->infile, 0, pipex->path);
 	close(pipex->infile);
-	while (pipex->argv[2] != NULL)
+	while (pipex->argv[1] != NULL)
 	{
-		if (ffork(pipex->path) == 0)
+		pid = ffork(pipex->path); 
+		if (pid == 0)
 		{
 			pipe_pos = pipex->pipefds + (2 * cmd_idx);
 			if (cmd_idx > 0)
-				manage_dup2(*pipe_pos - 2, 0, pipex->path);
+				manage_dup2(*(pipe_pos - 2), 0, pipex->path);
 			execute_child(pipex, cmd_idx);
 			free(*(pipex->argv));
 		}
 		else
 		{
+			waitpid(pid, &status, 0);
+			if (WEXITSTATUS(status))
+				ft_printf("Eres un gilipollas");
 			++pipex->argv;
 			++cmd_idx;
 		}

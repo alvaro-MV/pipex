@@ -52,14 +52,12 @@ static int	*set_pipefds(t_pipe *pipex, int n_pipes)
 void	close_pipefds(t_pipe *pipex, int n_pipes)
 {
 	int	i;
-	int	*next_pipe;
 
 	i = 0;
 	while (i < n_pipes)
 	{
-		next_pipe = pipex->pipefds + (2 * i);
-		close(next_pipe[0]);
-		close(next_pipe[1]);
+		close(pipex->pipefds[2 * i]);
+		close(pipex->pipefds[2 * i + 1]);
 		i++;
 	}
 }
@@ -88,7 +86,6 @@ int	main(int argc, char *argv[], char *env[])
 	argv++;
 	pipex.argv = argv;
 	execute_pipe(&pipex);
-	waitpid(-1, NULL, 0);
 	ft_free_array(pipex.path);
 	return (0);
 }

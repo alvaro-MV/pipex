@@ -6,7 +6,7 @@
 /*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 16:59:37 by alvmoral          #+#    #+#             */
-/*   Updated: 2024/09/29 14:38:06 by alvaro           ###   ########.fr       */
+/*   Updated: 2024/09/30 11:49:39 by alvaro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ void	manage_dup2(int old_fd, int new_fd, char **path)
 {
 	int	dup_value;
 
-	ft_printf("old_fd: %d,  new_fd: %d\n", old_fd, new_fd);
 	if (old_fd == -1)
 	{
 		perror("Bad file descriptor");
