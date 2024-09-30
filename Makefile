@@ -27,26 +27,28 @@ OBJ_BONUS=$(SRCS_BONUS:.c=.o)
 
 all: $(NAME)
 
+$(LIBFT):
+	@make -sC $(LIB_DIR) 
+
 %.o: %.c
 	$(CC)  -c $< -o $@ $(DEBUGFLAGS)
 
-$(NAME): $(OBJ)
-	@make -C $(LIB_DIR)
+$(NAME): $(LIBFT) $(OBJ)
 	$(CC) $(OBJ) $(LIBFT) -o $@ $(DEBUGFLAGS)
 
-$(NAME_BONUS): $(OBJ_BONUS)
+$(NAME_BONUS): $(LIBFT) $(OBJ_BONUS)
 	$(CC) $(OBJ_BONUS) $(LIBFT) -o $@ $(DEBUGFLAGS)
 
 bonus: $(NAME_BONUS)
 
 clean:
+	make -sC $(LIB_DIR) fclean
 	rm -rf $(OBJ) $(OBJ_BONUS)
-fclean:
-	rm -rf $(OBJ) $(OBJ_BONUS) $(NAME) $(NAME_BONUS)
+fclean: clean
+	rm -rf $(NAME) $(NAME_BONUS)
 
-re:
-	@make -s fclean
-	@make all
+re: fclean all
+
 norm: 
 	norminette $(SRCS)
 
