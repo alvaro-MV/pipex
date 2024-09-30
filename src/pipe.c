@@ -86,8 +86,6 @@ void	execute_pipe(t_pipe *pipex)
 {
 	int 	cmd_idx;
 	int		*pipe_pos;
-	//pid_t	pid;
-	//int		status;
 
 	cmd_idx = 0;
 	if (pipex->infile == - 1)
@@ -95,8 +93,6 @@ void	execute_pipe(t_pipe *pipex)
 	close(pipex->infile);
 	while (pipex->argv[1] != NULL)
 	{
-		//pid = ffork(pipex->path); 
-		//if (pid == 0)
 		if (ffork(pipex->path) == 0)
 		{
 			pipe_pos = pipex->pipefds + (2 * cmd_idx);
@@ -107,9 +103,6 @@ void	execute_pipe(t_pipe *pipex)
 		}
 		else
 		{
-//			waitpid(pid, &status, 0);
-			//if (WEXITSTATUS(status))
-				//ft_printf("Eres un gilipollas");
 			++pipex->argv;
 			++cmd_idx;
 		}
