@@ -111,8 +111,10 @@ void	execute_pipe(t_pipe *pipex)
 		}
 	}
 	i = 0;
-	while(i < cmd_idx - 1)
+	ft_printf("cmd idx: %d\n", cmd_idx);
+	while(i < cmd_idx)
 	{
+		write(1, "eoo\n", 4);
 		waitpid(pid[i++], NULL, 0);
 	}
 	free(pid);
