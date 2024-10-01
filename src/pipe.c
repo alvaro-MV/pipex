@@ -111,7 +111,10 @@ void	execute_pipe(t_pipe *pipex)
 		}
 	}
 	i = 0;
-	while(i < cmd_idx)
+	while(i < cmd_idx - 1)
+	{
 		waitpid(pid[i++], NULL, 0);
+	}
+	free(pid);
 	close_pipefds(pipex, pipex->n_pipes);
 }
