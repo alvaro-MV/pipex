@@ -86,7 +86,6 @@ int	main(int argc, char *argv[], char *env[])
 	argv++;
 	pipex.argv = argv;
 	execute_pipe(&pipex);
-	waitpid(-1, NULL, 0);
 	ft_free_array(pipex.path);
 	return (0);
 }

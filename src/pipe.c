@@ -86,14 +86,17 @@ void	execute_pipe(t_pipe *pipex)
 {
 	int 	cmd_idx;
 	int		*pipe_pos;
+	pid_t	*pid; //testeo
+	int		i;
 
 	cmd_idx = 0;
-	if (pipex->infile == - 1)
-		manage_dup2(pipex->infile, 0, pipex->path);
+	pid = (pid_t *) malloc(pipex->n_pipes * sizeof(pid_t));
+	manage_dup2(pipex->infile, 0, pipex->path);
 	close(pipex->infile);
 	while (pipex->argv[1] != NULL)
 	{
-		if (ffork(pipex->path) == 0)
+		pid[cmd_idx] = ffork(pipex->path); //testeo
+		if (pid[cmd_idx] == 0)
 		{
 			pipe_pos = pipex->pipefds + (2 * cmd_idx);
 			if (cmd_idx > 0)
@@ -107,5 +110,8 @@ void	execute_pipe(t_pipe *pipex)
 			++cmd_idx;
 		}
 	}
+	i = 0;
+	while(i < cmd_idx)
+		waitpid(pid[i++], NULL, 0);
 	close_pipefds(pipex, pipex->n_pipes);
 }
