@@ -82,20 +82,23 @@ void	execute_child(t_pipe *pipex, int cmd_idx)
 	(perror("execve"), exit(-1));
 }
 
+#include <errno.h> //testeo
+
 void	execute_pipe(t_pipe *pipex)
 {
 	int 	cmd_idx;
+	int		i;
 	int		*pipe_pos;
 	pid_t	*pid; //testeo
-	int		i;
 
 	cmd_idx = 0;
-	pid = (pid_t *) malloc(pipex->n_pipes * sizeof(pid_t));
+	pid = (pid_t *) malloc((pipex->n_pipes - 1) * sizeof(pid_t));
 	manage_dup2(pipex->infile, 0, pipex->path);
 	close(pipex->infile);
 	while (pipex->argv[1] != NULL)
 	{
 		pid[cmd_idx] = ffork(pipex->path); //testeo
+		printf("child: %d\n", pid[cmd_idx]);
 		if (pid[cmd_idx] == 0)
 		{
 			pipe_pos = pipex->pipefds + (2 * cmd_idx);
@@ -111,11 +114,20 @@ void	execute_pipe(t_pipe *pipex)
 		}
 	}
 	i = 0;
-	ft_printf("cmd idx: %d\n", cmd_idx);
-	while(i < cmd_idx)
+	while(cmd_idx)
 	{
-		write(1, "eoo\n", 4);
-		waitpid(pid[i++], NULL, 0);
+		pid_t pollas = waitpid(pid[i], NULL, WNOHANG);
+		if (pollas > 0)
+		{
+			ft_printf("pollas: %d\n", pollas);
+			cmd_idx--;
+			i++;
+		}
+		else if (pollas == 	0)
+		{
+			ft_printf("adeu\n");
+			break ;
+		}
 	}
 	free(pid);
 	close_pipefds(pipex, pipex->n_pipes);
