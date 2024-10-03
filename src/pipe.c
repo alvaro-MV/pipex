@@ -82,14 +82,12 @@ void	execute_child(t_pipe *pipex, int cmd_idx)
 	(perror("execve"), exit(-1));
 }
 
-#include <errno.h> //testeo
-
 void	execute_pipe(t_pipe *pipex)
 {
 	int 	cmd_idx;
 	int		i;
 	int		*pipe_pos;
-	pid_t	*pid; //testeo
+	pid_t	*pid;
 
 	cmd_idx = 0;
 	pid = (pid_t *) malloc((pipex->n_pipes - 1) * sizeof(pid_t));
@@ -98,9 +96,9 @@ void	execute_pipe(t_pipe *pipex)
 	while (pipex->argv[1] != NULL)
 	{
 		pid[cmd_idx] = ffork(pipex->path); //testeo
-		printf("child: %d\n", pid[cmd_idx]);
 		if (pid[cmd_idx] == 0)
 		{
+			printf("child: %d\n", getpid());
 			pipe_pos = pipex->pipefds + (2 * cmd_idx);
 			if (cmd_idx > 0)
 				manage_dup2(*(pipe_pos - 2), 0, pipex->path);
@@ -114,21 +112,17 @@ void	execute_pipe(t_pipe *pipex)
 		}
 	}
 	i = 0;
-	while(cmd_idx)
+	int status = -23;
+	while(i < cmd_idx)
 	{
-		pid_t pollas = waitpid(pid[i], NULL, WNOHANG);
-		if (pollas > 0)
-		{
-			ft_printf("pollas: %d\n", pollas);
-			cmd_idx--;
-			i++;
-		}
-		else if (pollas == 	0)
-		{
-			ft_printf("adeu\n");
-			break ;
-		}
+		pid_t pollas = waitpid(pid[i++], &status, WNOHANG);
+		ft_printf("pollas: %d\n", pollas);
+		ft_printf("status: %d\n", status);
 	}
+	ft_printf("FInallllll\n");
+//	status = -23;
+	//ft_printf("status: %d\n", status);
+	//waitpid(-1, &status, WNOHANG);
 	free(pid);
 	close_pipefds(pipex, pipex->n_pipes);
 }

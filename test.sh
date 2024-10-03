@@ -84,12 +84,18 @@ test() {
     # Compare durations
 	echo "Bash: ${X}$bash_duration${NC}s"
 	echo "Pipe: ${Y}$pipex_duration${NC}s"
+	time_diff=$(echo "($bash_duration - $pipex_duration) >= 0.99" | bc)
+	if [ $time_diff -gt 0 ]; then
+        echo "$RED [KO] process elapse time difference is over 1 second.\n$NC"
+		return 1
+	fi
     compare_outputs "$outfile" "check" "$transformer"
 }
 
 # Example usage
 test "infi" "lscpu" "cat -e" "outi" ""
-test "infi" "ls" "ls" "outi" ""
+#test "infi" "ls" "ls" "outi" ""
 #test "infi" "ping google.com -c 4" "head" "outi" ""
-test "infi" "ps aux" "grep cron" "outi" "grep -v pipex"
-test "infi" "sleep 2" "sleep 2" "outi" ""
+#test "infi" "ps aux" "grep cron" "outi" "grep -v pipex"
+test "infi" "sleep 3" "sleep 2" "outi" ""
+test "infi" "sleep 2" "sleep 3" "outi" ""
