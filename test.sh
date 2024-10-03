@@ -1,1 +1,95 @@
-sleep 2 | sleep 2
+# Define ANSI color codes
+GREEN='\033[0;32m'
+BLUE='\033[0;34m'
+RED='\033[0;31m'
+X='\033[0;35m'
+Y='\033[0;36m'
+NC='\033[0m' # No Color
+
+print_files()
+{
+	while IFS= read -r line; do
+		printf '%s\n' "$line"
+	done < "outi"
+	printf "\n"
+	while IFS= read -r line; do
+		printf '%s\n' "$line"
+	done < "check"
+}
+
+# Function to compare command outputs
+compare_outputs() {
+    local outi="$1"
+    local check="$2"
+	local transformer="$3"
+
+
+    if [ ! -f "$outi" ] || [ ! -f "$check" ]; then
+        echo "$RED [KO] Files do not exist or are inaccessible.$NC"
+        return 1
+    fi
+	if [ "$transformer" != "" ]; then
+		eval "$transformer" < $outi > "file1"
+		rm outi
+		mv file1 outi
+
+		eval "$transformer" < $check > "file2"
+		rm check
+		mv file2 check
+	fi
+
+    if [ "$(diff -q outi check)" = "" ]; then
+		echo "$GREEN [OK] $NC"
+	else
+		echo "$RED [KO] $NC"
+		print_files file1 file2
+	fi
+	printf "*------------*\n"
+}
+
+test() {
+    local infile="$1"
+    local cmd1="$2"
+    local cmd2="$3"
+    local outfile="$4"
+	local transformer="$5"
+
+    if [ ! -f "$infile" ]; then
+        echo "$RED [KO] Input file does not exist.$NC"
+        return 1
+    fi
+
+    if [ ! -f "pipex" ]; then
+        echo "$RED [KO] pipex binary does not exist.$NC"
+        return 1
+    fi
+
+    make -sC .
+	printf "$BLUE $cmd1 | $cmd2:\n $NC"
+	start_time=$(date +%s.%N)
+    ./pipex $infile "$cmd1" "$cmd2" "$outfile"
+    end_time=$(date +%s.%N)
+
+    pipex_duration=$(scale=3; echo "$end_time - $start_time" | bc)
+	pipex_duration=$(printf "%.4f" "$pipex_duration")
+	printf "done pipex\n"
+
+	start_time=$(date +%s.%N)
+	< $infile | $cmd1 | $cmd2 > "check"
+    end_time=$(date +%s.%N)
+
+    bash_duration=$(echo "$end_time - $start_time" | bc	)
+	bash_duration=$(printf "%.5f" "$bash_duration")
+
+    # Compare durations
+	echo "Bash: ${X}$bash_duration${NC}s"
+	echo "Pipe: ${Y}$pipex_duration${NC}s"
+    compare_outputs "$outfile" "check" "$transformer"
+}
+
+# Example usage
+test "infi" "lscpu" "cat -e" "outi" ""
+test "infi" "ls" "ls" "outi" ""
+#test "infi" "ping google.com -c 4" "head" "outi" ""
+test "infi" "ps aux" "grep cron" "outi" "grep -v pipex"
+test "infi" "sleep 2" "sleep 2" "outi" ""
