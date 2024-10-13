@@ -9,7 +9,8 @@ SRCS_BONUS=bonus/get_next_line_bonus.c \
 		   bonus/pipex_bonus.c \
 		   bonus/pipe_bonus.c \
 		   bonus/system_calls_bonus.c \
-		   bonus/checker_args_bonus.c
+		   bonus/checker_args_bonus.c \
+		   bonus/bonus_utils.c
 
 LIB_DIR=./lib
 LIBFT=./lib/libft.a

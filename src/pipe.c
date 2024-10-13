@@ -51,10 +51,24 @@ void	bad_exec(t_pipe *pipex, char **arguments)
 	exit(1);
 }
 
+void	parent_wait(t_pipe *pipex, int cmd_idx)
+{
+	int		i;
+	int		status;
+
+	i = 0;
+	while (i < cmd_idx)
+		waitpid(pipex->pid[i++], &status, 0);
+	free(pipex->pid);
+	if (WIFEXITED(status))
+		pipex->exit_status = WEXITSTATUS(status);
+	else
+		pipex->exit_status = 1;
+}
+
 /* 
 	bad exec, mal orden, que el archivo de redireccion no exista, 
  */
-
 void	execute_child(t_pipe *pipex, int cmd_idx)
 {
 	char	**arguments;
@@ -85,21 +99,16 @@ void	execute_child(t_pipe *pipex, int cmd_idx)
 void	execute_pipe(t_pipe *pipex)
 {
 	int 	cmd_idx;
-	//int		i;
 	int		*pipe_pos;
-	pid_t	*pid;
-	pid_t pollas; //Testeo
 
 	cmd_idx = 0;
-	pid = (pid_t *) malloc((pipex->n_pipes - 1) * sizeof(pid_t));
 	manage_dup2(pipex->infile, 0, pipex->path);
 	close(pipex->infile);
 	while (pipex->argv[1] != NULL)
 	{
-		pid[cmd_idx] = ffork(pipex->path); //testeo
-		if (pid[cmd_idx] == 0)
+		pipex->pid[cmd_idx] = ffork(pipex->path);
+		if (pipex->pid[cmd_idx] == 0)
 		{
-			printf("child: %d\n", getpid());
 			pipe_pos = pipex->pipefds + (2 * cmd_idx);
 			if (cmd_idx > 0)
 				manage_dup2(*(pipe_pos - 2), 0, pipex->path);
@@ -112,35 +121,6 @@ void	execute_pipe(t_pipe *pipex)
 			++cmd_idx;
 		}
 	}
-	//i = 0;
-	int	status;
-	cmd_idx--;
-//	while(cmd_idx > 0)
-	//{
-		//status = -13;
-		//pollas = waitpid(-1, &status, WNOHANG);
-		//ft_printf("ORING pollas: %d status: %d\n", pollas, WIFEXITED(status));
-		//if (pollas == 0 && WIFEXITED(status))
-		//{
-			//pollas = waitpid(pid[cmd_idx], &status, 0);
-			//ft_printf("pollas: %d\n", pollas);
-		//}
-		//else
-			//ft_printf("pid i: %d --> ha terminado el puto proceso.\n", pid[cmd_idx]);
-		//cmd_idx--;
-		////i++;
-	//}
 	close_pipefds(pipex, pipex->n_pipes);
-	while (cmd_idx >= 0)
-	{
-		pollas = waitpid(pid[cmd_idx], &status, 0);
-		if (pollas == pid[1])
-		{
-			if ((cmd_idx == 1) && WIFEXITED(status))
-				ft_printf("polassssssssssssss\n");
-		}
-		cmd_idx--;
-	}
-	ft_printf("FInallllll\n");
-	free(pid);
+	parent_wait(pipex, cmd_idx);
 }

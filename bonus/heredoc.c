@@ -14,59 +14,6 @@
 #include "../lib/include/libft.h"
 #include "../include/get_next_line.h"
 
-void	execute_child_hd(char **argv, char **path, int pipefd[2])
-{
-	char	**arguments;
-	int		file_fd;
-
-	arguments = ft_split(*argv, ' ');
-	arguments[0] = find_exec_in_path(path, arguments[0]);
-	if (argv[2] != NULL)
-		manage_dup2(pipefd[1], 1, path);
-	else
-	{
-		file_fd = open(argv[1], O_APPEND | O_WRONLY | O_CREAT, 0644);
-		if (file_fd == -1)
-			return (perror(argv[1]), ft_free_array(path), exit (-1));
-		manage_dup2(file_fd, 1, path);
-	}
-	close(pipefd[1]);
-	close(pipefd[0]);
-	ft_free_array(path);
-	if (arguments[0] == NULL)
-		bad_exec(pipefd, arguments, argv, path);
-	execve(arguments[0], arguments, NULL);
-	(perror("execve"), exit(-1));
-}
-
-void	execute_pipe_hd(char **path, char **argv, int infd)
-{
-	int		pipefd[2];
-	int		status;
-	int		fdd;
-
-	fdd = 0;
-	manage_dup2(infd, 0, path);
-	close(infd);
-	while (argv[1] != NULL)
-	{
-		manage_pipe(pipefd, path);
-		if (ffork(path) == 0)
-		{
-			manage_dup2(fdd, 0, path);
-			execute_child_hd(argv, path, pipefd);
-		}
-		else
-		{
-			wait(&status);
-			ft_printf("status: %d\n", status);
-			close(pipefd[1]);
-			fdd = pipefd[0];
-			++argv;
-		}
-	}
-}
-
 int	here_doc(char *delimiter, char **path)
 {
 	char	*next_line;

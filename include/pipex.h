@@ -6,7 +6,7 @@
 /*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 19:44:12 by alvaro            #+#    #+#             */
-/*   Updated: 2024/09/25 10:04:26 by alvaro           ###   ########.fr       */
+/*   Updated: 2024/10/14 01:51:52 by alvaro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ typedef struct s_pipe
 	int		infile;
 	int		n_pipes;
 	int		*pipefds;
+	int		exit_status;
+	pid_t	*pid;
 }			t_pipe;
 
 char	**get_path(char *env[]);
@@ -41,9 +43,5 @@ char	*find_exec_in_path(char **path, char *exec);
 void	execute_child(t_pipe *pipex, int cmd_idx);
 void	execute_pipe(t_pipe *pipex);
 void	close_pipefds(t_pipe *pipex, int n_pipes);
-
-// get next line
-
-char	*get_next_line(int fd);
 
 #endif

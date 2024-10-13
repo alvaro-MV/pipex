@@ -75,6 +75,7 @@ int	main(int argc, char *argv[], char *env[])
 	}
 	pipex.n_pipes = argc - 3;
 	pipex.path = get_path(env);
+	pipex.pid = (pid_t *) malloc((pipex.n_pipes - 1) * sizeof(pid_t));
 	if (pipex.path == NULL)
 		return (1);
 	pipex.pipefds = set_pipefds(&pipex, argc - 3);
@@ -83,9 +84,8 @@ int	main(int argc, char *argv[], char *env[])
 	pipex.infile = open(argv[0], O_RDONLY);
 	if (pipex.infile == -1)
 		ft_printf("%s: No such file or directory\n", argv[0]);
-	argv++;
-	pipex.argv = argv;
+	pipex.argv = argv + 1;
 	execute_pipe(&pipex);
 	ft_free_array(pipex.path);
-	return (0);
+	return (pipex.exit_status);
 }

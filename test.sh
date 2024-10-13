@@ -4,6 +4,7 @@ BLUE='\033[0;34m'
 RED='\033[0;31m'
 X='\033[0;35m'
 Y='\033[0;36m'
+SEP_LINE='\033[0;33m'
 NC='\033[0m' # No Color
 
 print_files()
@@ -11,7 +12,7 @@ print_files()
 	while IFS= read -r line; do
 		printf '%s\n' "$line"
 	done < "outi"
-	printf "\n"
+    echo "$SEP_LINE{.}{.}{.}{.}{.}{.}{.}{.}{.}{.}{.}{.}{.}{.}{.}{.}{.}{.}{.}{.}{.}{.}{.}{.}{.}{.}{.}{.}{.}{.}$NC"
 	while IFS= read -r line; do
 		printf '%s\n' "$line"
 	done < "check"
@@ -94,8 +95,9 @@ test() {
 
 # Example usage
 test "infi" "lscpu" "cat -e" "outi" ""
-#test "infi" "ls" "ls" "outi" ""
+test "infi" "ls" "ls" "outi" ""
 #test "infi" "ping google.com -c 4" "head" "outi" ""
-#test "infi" "ps aux" "grep cron" "outi" "grep -v pipex"
+test "infi" "ps aux" "grep cron" "outi" "grep -v pipex"
 test "infi" "sleep 3" "sleep 2" "outi" ""
 test "infi" "sleep 2" "sleep 3" "outi" ""
+test "infi" "cat" "ls" "outi" ""
