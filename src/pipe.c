@@ -41,16 +41,6 @@ char	*find_exec_in_path(char **path, char *exec)
 	return (free(exec), NULL);
 }
 
-void	bad_exec(t_pipe *pipex, char **arguments)
-{
-	ft_putstr_fd(pipex->argv[0], 2);
-	perror(": command not found.\n");
-	close_pipefds(pipex, pipex->n_pipes);
-	ft_free_array(arguments);
-	ft_free_array(pipex->path);
-	exit(1);
-}
-
 void	parent_wait(t_pipe *pipex, int cmd_idx)
 {
 	int		i;
@@ -72,28 +62,25 @@ void	parent_wait(t_pipe *pipex, int cmd_idx)
 void	execute_child(t_pipe *pipex, int cmd_idx)
 {
 	char	**arguments;
-	int		out_fd;
 	int		*pipe_pos;
 
 	arguments = ft_split(*pipex->argv, ' ');
+	//printf("arguments[0]: %s, arguments[1]: %s\n", arguments[0], arguments[1]);
 	arguments[0] = find_exec_in_path(pipex->path, arguments[0]);
-	if (arguments[0] == NULL)
-		bad_exec(pipex, arguments);
 	pipe_pos = pipex->pipefds + (2 * cmd_idx);
 	if (pipex->argv[2] != NULL)
-		manage_dup2(*(pipe_pos + 1), 1, pipex->path);
+		manage_dup2(*(pipe_pos + 1), 1);
 	else
 	{
-		out_fd = open(pipex->argv[1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
-		if (out_fd == -1)
-			return (perror(pipex->argv[1]), exit(-1));
-		manage_dup2(out_fd, 1, pipex->path);
-		close(out_fd);
+		manage_dup2(pipex->outfile, 1);
+		close(pipex->outfile);
 	}
 	close_pipefds(pipex, pipex->n_pipes);
 	ft_free_array(pipex->path);
 	execve(arguments[0], arguments, NULL);
-	(perror("execve"), exit(-1));
+	perror(arguments[0]);
+	ft_free_array(arguments);
+	exit(-1);
 }
 
 void	execute_pipe(t_pipe *pipex)
@@ -102,7 +89,7 @@ void	execute_pipe(t_pipe *pipex)
 	int		*pipe_pos;
 
 	cmd_idx = 0;
-	manage_dup2(pipex->infile, 0, pipex->path);
+	manage_dup2(pipex->infile, 0);
 	close(pipex->infile);
 	while (pipex->argv[1] != NULL)
 	{
@@ -111,7 +98,7 @@ void	execute_pipe(t_pipe *pipex)
 		{
 			pipe_pos = pipex->pipefds + (2 * cmd_idx);
 			if (cmd_idx > 0)
-				manage_dup2(*(pipe_pos - 2), 0, pipex->path);
+				manage_dup2(*(pipe_pos - 2), 0);
 			execute_child(pipex, cmd_idx);
 			free(*(pipex->argv));
 		}

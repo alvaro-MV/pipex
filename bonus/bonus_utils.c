@@ -1,4 +1,5 @@
 #include "../include/pipex_bonus.h"
+#include "../include/heredoc.h"
 
 int	*set_pipefds(t_pipe *pipex, int n_pipes)
 {
@@ -32,16 +33,18 @@ void	close_pipefds(t_pipe *pipex, int n_pipes)
 	}
 }
 
-void	get_infile_hd(t_pipe *pipex)
+void	get_infile(t_pipe *pipex)
 {
-	pipex->infile = here_doc(pipex->argv[0], pipex->path);
-	if (pipex->infile == -1)
-		ft_printf("%s: No such file or directory\n", pipex->argv[0]);
-}
-
-void	get_infile_pipex(t_pipe *pipex)
-{
-	pipex->infile = open(pipex->argv[0], O_RDONLY);
-	if (pipex->infile == -1)
-		ft_printf("%s: No such file or directory\n", pipex->argv[0]);
+	if (ft_strcmp(pipex->argv[0], "here_doc") == 0)
+	{
+		pipex->infile = here_doc(pipex->argv[0], pipex->path);
+		if (pipex->infile == -1)
+			ft_printf("%s: No such file or directory\n", pipex->argv[0]);
+	}
+	else
+	{
+		pipex->infile = open(pipex->argv[0], O_RDONLY);
+		if (pipex->infile == -1)
+			ft_printf("%s: No such file or directory\n", pipex->argv[0]);
+	}
 }

@@ -62,28 +62,40 @@ void	close_pipefds(t_pipe *pipex, int n_pipes)
 	}
 }
 
+int	init_pipex(t_pipe *pipex, int argc, char **env)
+{
+	pipex->n_pipes = argc - 3;
+	pipex->pid = (pid_t *) ft_calloc((pipex->n_pipes), sizeof(pid_t));
+	if (pipex->pid == NULL)
+		return (1);
+	pipex->path = get_path(env);
+	if (pipex->path == NULL)
+		return (1);
+	pipex->pipefds = set_pipefds(pipex, argc - 3);
+	if (pipex->pipefds == NULL)
+		return (1);
+	return (0);
+}
+
 int	main(int argc, char *argv[], char *env[])
 {
 	t_pipe	pipex;
 
 	argv++;
+	pipex.argv = argv;
 	if (argc < 5)
 	{
 		ft_printf("Incorrect format: ");
 		ft_printf("<infile command 1 ... command n outfile>\n");
 		return (1);
 	}
-	pipex.n_pipes = argc - 3;
-	pipex.path = get_path(env);
-	pipex.pid = (pid_t *) malloc((pipex.n_pipes - 1) * sizeof(pid_t));
-	if (pipex.path == NULL)
-		return (1);
-	pipex.pipefds = set_pipefds(&pipex, argc - 3);
-	if (pipex.pipefds == NULL)
-		return (1);
+	init_pipex(&pipex, argc, env);
 	pipex.infile = open(argv[0], O_RDONLY);
 	if (pipex.infile == -1)
-		ft_printf("%s: No such file or directory\n", argv[0]);
+		perror(argv[0]);
+	pipex.outfile = open(pipex.argv[argc - 2], O_RDWR | O_CREAT | O_TRUNC, 0644);
+	if (pipex.outfile == -1)
+		return (perror(pipex.argv[argc - 2]), ft_free_array(pipex.path), -1);
 	pipex.argv = argv + 1;
 	execute_pipe(&pipex);
 	ft_free_array(pipex.path);

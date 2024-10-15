@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../include/pipex_bonus.h"
+#include "../include/system_calls_bonus.h"
 
 char	*find_exec_in_path(char **path, char *exec)
 {
@@ -41,16 +42,6 @@ char	*find_exec_in_path(char **path, char *exec)
 	return (free(exec), NULL);
 }
 
-void	bad_exec(t_pipe *pipex, char **arguments)
-{
-	ft_putstr_fd(pipex->argv[0], 2);
-	perror(": command not found.\n");
-	close_pipefds(pipex, pipex->n_pipes);
-	ft_free_array(arguments);
-	ft_free_array(pipex->path);
-	exit(1);
-}
-
 void	parent_wait(t_pipe *pipex, int cmd_idx)
 {
 	int		i;
@@ -76,14 +67,12 @@ void	execute_child(t_pipe *pipex, int cmd_idx)
 
 	arguments = ft_split(*pipex->argv, ' ');
 	arguments[0] = find_exec_in_path(pipex->path, arguments[0]);
-	if (arguments[0] == NULL)
-		bad_exec(pipex, arguments);
 	pipe_pos = pipex->pipefds + (2 * cmd_idx);
 	if (pipex->argv[2] != NULL)
 		manage_dup2(*(pipe_pos + 1), 1, pipex->path);
 	else
 	{
-		manage_dup2(pipex->outfile, 1, pipex->path);
+		manage_dup2(pipex->outfile, 1);
 		close(pipex->outfile);
 	}
 	close_pipefds(pipex, pipex->n_pipes);

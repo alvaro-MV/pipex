@@ -6,7 +6,7 @@
 /*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 10:04:38 by alvaro            #+#    #+#             */
-/*   Updated: 2024/10/14 01:51:55 by alvaro           ###   ########.fr       */
+/*   Updated: 2024/10/15 12:36:32 by alvaro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,15 +39,13 @@ char	**get_path(char *env[]);
 void	checker_args(char **argv, int argc, char **path);
 
 int		exec_exist(char **path, char *exec);
-void	bad_exec(t_pipe *pipex, char **arguments);
 char	*find_exec_in_path(char **path, char *exec);
 void	execute_child(t_pipe *pipex, int cmd_idx);
 void	execute_pipe(t_pipe *pipex);
 void	close_pipefds(t_pipe *pipex, int n_pipes);
 int		*set_pipefds(t_pipe *pipex, int n_pipes);
 void	close_pipefds(t_pipe *pipex, int n_pipes);
-void	get_infile_hd(t_pipe *pipex);
-void	get_infile_pipex(t_pipe *pipex);
+void	get_infile(t_pipe *pipex);
 
 // get next line
 

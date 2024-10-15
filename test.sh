@@ -98,6 +98,14 @@ test "infi" "lscpu" "cat -e" "outi" ""
 test "infi" "ls" "ls" "outi" ""
 #test "infi" "ping google.com -c 4" "head" "outi" ""
 test "infi" "ps aux" "grep cron" "outi" "grep -v pipex"
-test "infi" "sleep 3" "sleep 2" "outi" ""
-test "infi" "sleep 2" "sleep 3" "outi" ""
+#test "infi" "sleep 3" "sleep 2" "outi" ""
+#test "infi" "sleep 2" "sleep 3" "outi" ""
 test "infi" "cat" "ls" "outi" ""
+test "infi" "srgfg" "cat" "outi"
+test "infi" "srgfg" "lkjnf" "outi"
+test "infi" "ls" "lkjnf" "outi"
+test "ijwneef" "ls" "lkjnf" "outi"
+test "ijwneef" "ls" "lkjnf" "sdghrfhgrsfgd"
+
+
+

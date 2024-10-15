@@ -6,7 +6,7 @@
 /*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 16:59:37 by alvmoral          #+#    #+#             */
-/*   Updated: 2024/09/30 11:49:39 by alvaro           ###   ########.fr       */
+/*   Updated: 2024/10/15 13:51:46 by alvaro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,20 +24,16 @@ int	manage_pipe(int pipefd[2], char **path)
 	return (0);
 }
 
-void	manage_dup2(int old_fd, int new_fd, char **path)
+void	manage_dup2(int old_fd, int new_fd)
 {
 	int	dup_value;
 
 	if (old_fd == -1)
-	{
-		perror("Bad file descriptor");
-		ft_free_array(path);
-		exit(-1);
-	}
-	else
-		dup_value = dup2(old_fd, new_fd);
+		return ;
+	//else
+	dup_value = dup2(old_fd, new_fd);
 	if (dup_value == -1)
-		(perror("Not posible to duplicate infile fd\n"), exit(-1));
+		perror("");
 }
 
 int	ffork(char  **path)
