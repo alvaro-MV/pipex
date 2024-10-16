@@ -31,6 +31,7 @@ void	close_pipefds(t_pipe *pipex, int n_pipes)
 		close(pipex->pipefds[2 * i + 1]);
 		i++;
 	}
+	free(pipex->pipefds);
 }
 
 void	get_infile(t_pipe *pipex)

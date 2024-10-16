@@ -60,6 +60,7 @@ void	close_pipefds(t_pipe *pipex, int n_pipes)
 		close(pipex->pipefds[2 * i + 1]);
 		i++;
 	}
+	free(pipex->pipefds);
 }
 
 int	init_pipex(t_pipe *pipex, int argc, char **env)
@@ -98,6 +99,7 @@ int	main(int argc, char *argv[], char *env[])
 		return (perror(pipex.argv[argc - 2]), ft_free_array(pipex.path), -1);
 	pipex.argv = argv + 1;
 	execute_pipe(&pipex);
+	manage_close(pipex.outfile);
 	ft_free_array(pipex.path);
 	return (pipex.exit_status);
 }

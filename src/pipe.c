@@ -38,7 +38,7 @@ char	*find_exec_in_path(char **path, char *exec)
 			path++;
 		}
 	}
-	return (free(exec), NULL);
+	return (exec);
 }
 
 void	parent_wait(t_pipe *pipex, int cmd_idx)
@@ -65,20 +65,19 @@ void	execute_child(t_pipe *pipex, int cmd_idx)
 	int		*pipe_pos;
 
 	arguments = ft_split(*pipex->argv, ' ');
-	//printf("arguments[0]: %s, arguments[1]: %s\n", arguments[0], arguments[1]);
 	arguments[0] = find_exec_in_path(pipex->path, arguments[0]);
 	pipe_pos = pipex->pipefds + (2 * cmd_idx);
 	if (pipex->argv[2] != NULL)
 		manage_dup2(*(pipe_pos + 1), 1);
 	else
-	{
 		manage_dup2(pipex->outfile, 1);
-		close(pipex->outfile);
-	}
 	close_pipefds(pipex, pipex->n_pipes);
+	manage_close(pipex->outfile);
 	ft_free_array(pipex->path);
+	free(pipex->pid);
 	execve(arguments[0], arguments, NULL);
-	perror(arguments[0]);
+	ft_putstr_fd(arguments[0], 2);
+	ft_putstr_fd(": command not found\n", 2);
 	ft_free_array(arguments);
 	exit(-1);
 }
@@ -90,7 +89,7 @@ void	execute_pipe(t_pipe *pipex)
 
 	cmd_idx = 0;
 	manage_dup2(pipex->infile, 0);
-	close(pipex->infile);
+	manage_close(pipex->infile);
 	while (pipex->argv[1] != NULL)
 	{
 		pipex->pid[cmd_idx] = ffork(pipex->path);

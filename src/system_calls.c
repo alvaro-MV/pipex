@@ -6,7 +6,7 @@
 /*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 16:59:37 by alvmoral          #+#    #+#             */
-/*   Updated: 2024/10/15 13:51:46 by alvaro           ###   ########.fr       */
+/*   Updated: 2024/10/16 11:51:26 by alvaro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,3 +61,8 @@ int	manage_status(int status, char **path)
 	return (0);
 }
 
+void	manage_close(int fd)
+{
+	if (fd != -1)
+		close(fd);
+}

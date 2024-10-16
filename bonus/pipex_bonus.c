@@ -93,8 +93,9 @@ int	main(int argc, char *argv[], char *env[])
 		call_pipe(&pipex, argc);
 	else
 		call_here_doc(&pipex, argc);	
+	manage_close(pipex.outfile);
 	ft_free_array(pipex.path);
-	free(pipex.pipefds);
+	//free(pipex.pipefds);
 	return (pipex.exit_status);
 }
 
