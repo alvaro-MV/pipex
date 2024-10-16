@@ -91,8 +91,8 @@ int	main(int argc, char *argv[], char *env[])
 	pipex.pid = NULL;
 	get_infile(&pipex);
 	pipex.argv++;
-	init_pipex(&pipex, argc, env);
-		//return (1);
+	if (init_pipex(&pipex, argc, env))
+		return (1);
 	if (ft_strcmp(argv[0], "here_doc") != 0)
 		call_pipe(&pipex, argc);
 	else

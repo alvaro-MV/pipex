@@ -13,15 +13,16 @@
 #include "../include/pipex.h"
 #include "../lib/include/libft.h"
 #include "../include/system_calls.h"
-
 char	**get_path(char *env[])
 {
 	char	**path;
 	char	*path_env;
 
-	while (ft_strncmp(*env, "PATH", 4))
-		env++;
 	if (env == NULL)
+		return (NULL);
+	while (*env && ft_strncmp(*env, "PATH", 4))
+		env++;
+	if (*env == NULL)
 		return (NULL);
 	path_env = *env;
 	path_env = &(path_env[5]);
@@ -72,15 +73,13 @@ void	close_pipefds(t_pipe *pipex, int n_pipes)
 int	init_pipex(t_pipe *pipex, int argc, char **env)
 {
 	pipex->n_pipes = argc - 3;
+	pipex->path = get_path(env);
 	pipex->pid = (pid_t *) ft_calloc((pipex->n_pipes), sizeof(pid_t));
 	if (pipex->pid == NULL)
-		return (1);
-	pipex->path = get_path(env);
-	if (pipex->path == NULL)
-		return (1);
+		return (ft_free_array(pipex->path), 1);
 	pipex->pipefds = set_pipefds(pipex, argc - 3);
 	if (pipex->pipefds == NULL)
-		return (1);
+		return (ft_free_array(pipex->path), free(pipex->pid), 1);
 	return (0);
 }
 
@@ -96,7 +95,8 @@ int	main(int argc, char *argv[], char *env[])
 	}
 	argv++;
 	pipex.argv = argv;
-	init_pipex(&pipex, argc, env);
+	if (init_pipex(&pipex, argc, env))
+		return (1);
 	pipex.infile = open(argv[0], O_RDONLY);
 	if (pipex.infile == -1)
 		perror(argv[0]);

@@ -55,11 +55,6 @@ test() {
     local outfile="$4"
 	local transformer="$5"
 
-    if [ ! -f "$infile" ]; then
-        echo "$RED [KO] Input file does not exist.$NC"
-        return 1
-    fi
-
     if [ ! -f "pipex" ]; then
         echo "$RED [KO] pipex binary does not exist.$NC"
         return 1
@@ -68,7 +63,7 @@ test() {
     make -sC .
 	printf "$BLUE $cmd1 | $cmd2:\n $NC"
 	start_time=$(date +%s.%N)
-    ./pipex $infile "$cmd1" "$cmd2" "$outfile"
+    ./pipex_bonus $infile "$cmd1" "$cmd2" "$outfile"
     end_time=$(date +%s.%N)
 
     pipex_duration=$(scale=3; echo "$end_time - $start_time" | bc)
@@ -108,6 +103,7 @@ test "ijwneef" "ls" "lkjnf" "outi"
 test "ijwneef" "ls" "lkjnf" "sdghrfhgrsfgd"
 test "infi" "" "cat" "out"
 test "unsfihewhfn" "ps aux" "grep cron" outi
+
 
 
 
