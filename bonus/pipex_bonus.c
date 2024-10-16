@@ -37,6 +37,8 @@ void	call_pipe(t_pipe *pipex, int argc)
 	{
 		ft_printf("Incorrect format: ");
 		ft_printf("<infile command 1 ... command n outfile>\n");
+		close_pipefds(pipex, pipex->n_pipes);
+		free(pipex->pid);
 		return ;
 	}
 	//checker_args(argv, argc, path);
@@ -52,13 +54,13 @@ void	call_here_doc(t_pipe *pipex, int argc)
 	{
 		ft_printf("Incorrect format: ");
 		ft_printf("./pipex here_doc DEL command 1 command 2 outfile>\n");
+		close_pipefds(pipex, pipex->n_pipes);
+		free(pipex->pid);
 		return ;
 	}
-	pipex->outfile = open(pipex->argv[argc - 4], O_APPEND | O_CREAT | O_TRUNC, 0644);
+	pipex->outfile = open(pipex->argv[argc - 4], O_RDWR | O_CREAT | O_APPEND, 0644);
 	if (pipex->outfile == -1)
 		return (perror(" "), free_pipex(pipex), exit (-1));
-	pipex->argv++;
-	argc--;
 	//checker_args(argv, argc, path);
 	execute_pipe(pipex);
 }

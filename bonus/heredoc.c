@@ -42,3 +42,4 @@ int	here_doc(char *delimiter, char **path)
 	close(infd[1]);
 	return (infd[0]);
 }
+
