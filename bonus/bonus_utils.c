@@ -43,7 +43,7 @@ void	get_infile(t_pipe *pipex)
 {
 	if (ft_strcmp(pipex->argv[0], "here_doc") == 0)
 	{
-		pipex->infile = here_doc(pipex->argv[1]);
+		pipex->infile = here_doc(pipex->argv[1], pipex->path);
 		if (pipex->infile == -1)
 			ft_printf("%s: No such file or directory\n", pipex->argv[0]);
 		pipex->argv++;

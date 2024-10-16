@@ -6,6 +6,8 @@ void	ft_free_array(char **marr)
 	unsigned int	i;
 
 	i = 0;
+	if (marr == NULL)
+		return ;
 	while (marr[i])
 	{
 		free_ptr = marr[i];
