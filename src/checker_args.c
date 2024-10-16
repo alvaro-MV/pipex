@@ -71,3 +71,10 @@ void	checker_args(char **argv, int argc, char **path)
 		i++;
 	}
 }
+
+void	free_pipex(t_pipe *pipex)
+{
+	ft_free_array(pipex->path);
+	close_pipefds(pipex, pipex->n_pipes);
+	free(pipex->pid);
+}

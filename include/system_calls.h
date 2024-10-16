@@ -6,7 +6,7 @@
 /*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 19:22:07 by alvaro            #+#    #+#             */
-/*   Updated: 2024/10/16 11:53:02 by alvaro           ###   ########.fr       */
+/*   Updated: 2024/10/16 13:02:55 by alvaro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include "../lib/include/libft.h"
+# include "pipex.h"
 
-int		manage_pipe(int pipefd[2], char **path);
 void	manage_dup2(int old_fd, int new_fd);
 int		ffork(char **path);
 int		manage_status(int status, char **path);

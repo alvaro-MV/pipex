@@ -6,23 +6,12 @@
 /*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 16:59:37 by alvmoral          #+#    #+#             */
-/*   Updated: 2024/10/16 11:51:26 by alvaro           ###   ########.fr       */
+/*   Updated: 2024/10/16 13:02:38 by alvaro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/system_calls.h"
-
-int	manage_pipe(int pipefd[2], char **path)
-{
-	if (pipe(pipefd) == -1)
-	{
-		perror("Pipe not working\n");
-		ft_free_array(path);
-		exit(-1);
-
-	}
-	return (0);
-}
+#include "../include/pipex.h"
 
 void	manage_dup2(int old_fd, int new_fd)
 {
@@ -30,7 +19,6 @@ void	manage_dup2(int old_fd, int new_fd)
 
 	if (old_fd == -1)
 		return ;
-	//else
 	dup_value = dup2(old_fd, new_fd);
 	if (dup_value == -1)
 		perror("");

@@ -6,7 +6,7 @@
 /*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 10:04:38 by alvaro            #+#    #+#             */
-/*   Updated: 2024/10/15 12:36:32 by alvaro           ###   ########.fr       */
+/*   Updated: 2024/10/16 13:10:04 by alvaro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ void	close_pipefds(t_pipe *pipex, int n_pipes);
 int		*set_pipefds(t_pipe *pipex, int n_pipes);
 void	close_pipefds(t_pipe *pipex, int n_pipes);
 void	get_infile(t_pipe *pipex);
+void	free_pipex(t_pipe *pipex);
 
 // get next line
 

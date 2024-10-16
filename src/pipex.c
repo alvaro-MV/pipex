@@ -12,6 +12,7 @@
 
 #include "../include/pipex.h"
 #include "../lib/include/libft.h"
+#include "../include/system_calls.h"
 
 char	**get_path(char *env[])
 {
@@ -43,7 +44,12 @@ static int	*set_pipefds(t_pipe *pipex, int n_pipes)
 	while (i < n_pipes)
 	{
 		next_pipe = pipefds + (2 * i);
-		manage_pipe(next_pipe, pipex->path);
+		if (pipe(next_pipe) == -1)
+		{
+			ft_free_array(pipex->path);
+			free(pipex->pid);
+			exit(-1);
+		}
 		i++;
 	}
 	return (pipefds);
@@ -82,21 +88,21 @@ int	main(int argc, char *argv[], char *env[])
 {
 	t_pipe	pipex;
 
-	argv++;
-	pipex.argv = argv;
-	if (argc < 5)
+	if (argc != 5)
 	{
 		ft_printf("Incorrect format: ");
 		ft_printf("<infile command 1 ... command n outfile>\n");
 		return (1);
 	}
+	argv++;
+	pipex.argv = argv;
 	init_pipex(&pipex, argc, env);
 	pipex.infile = open(argv[0], O_RDONLY);
 	if (pipex.infile == -1)
 		perror(argv[0]);
 	pipex.outfile = open(pipex.argv[argc - 2], O_RDWR | O_CREAT | O_TRUNC, 0644);
 	if (pipex.outfile == -1)
-		return (perror(pipex.argv[argc - 2]), ft_free_array(pipex.path), -1);
+		return (perror(" "), free_pipex(&pipex), -1);
 	pipex.argv = argv + 1;
 	execute_pipe(&pipex);
 	manage_close(pipex.outfile);

@@ -41,12 +41,16 @@ sleep 2 | sleep 2: solo pasan dos segundos.
 ## Caso 8: parseo: ./pipex_bonus infile "" cat out
 	No hace nada, mirar fsanize.
 
-## Caso 9: parseo: ./pipex/pipex_bonus 11 11 11 11 hola
+## Caso 9: parseo: ./pipex_bonus 11 11 11 11 hola
 	No crea el archivo hola, no crea el archivo hola, no saca un log para cada directorio.
 
 ## Caso 10: env -i bash ./pipex infile "ps aux" "grep cron" outi
 	Segmentation fault en zsh. Mirar otros comandos, si es en general en el caso de zsh o solo en este comando y no
 en otros.
+
+## Caso 10: ./pipex osuddbfef "ps aux" "grep cron" outi
+	En este caso bash no ejecuta el "ps aux" en la pipe, y por lo tanto, no escribe nada.
+	En mi caso, si ejecuto el "ps aux".	
 
 ## Caso 11: cat | ls
 	tiene que printar ls y despues quedarse esperando, y para salir de la espera hayq que pulsar enter, no ctr+D.

@@ -14,7 +14,12 @@ int	*set_pipefds(t_pipe *pipex, int n_pipes)
 	while (i < n_pipes)
 	{
 		next_pipe = pipefds + (2 * i);
-		manage_pipe(next_pipe, pipex->path);
+		if (pipe(next_pipe) == -1)
+		{
+			ft_free_array(pipex->path);
+			free(pipex->pid);
+			exit(-1);
+		}
 		i++;
 	}
 	return (pipefds);
@@ -38,9 +43,10 @@ void	get_infile(t_pipe *pipex)
 {
 	if (ft_strcmp(pipex->argv[0], "here_doc") == 0)
 	{
-		pipex->infile = here_doc(pipex->argv[0], pipex->path);
+		pipex->infile = here_doc(pipex->argv[1], pipex->path);
 		if (pipex->infile == -1)
 			ft_printf("%s: No such file or directory\n", pipex->argv[0]);
+		pipex->argv++;
 	}
 	else
 	{
@@ -48,4 +54,11 @@ void	get_infile(t_pipe *pipex)
 		if (pipex->infile == -1)
 			ft_printf("%s: No such file or directory\n", pipex->argv[0]);
 	}
+}
+
+void	free_pipex(t_pipe *pipex)
+{
+	ft_free_array(pipex->path);
+	close_pipefds(pipex, pipex->n_pipes);
+	free(pipex->pid);
 }

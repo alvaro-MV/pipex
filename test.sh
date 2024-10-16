@@ -106,6 +106,9 @@ test "infi" "srgfg" "lkjnf" "outi"
 test "infi" "ls" "lkjnf" "outi"
 test "ijwneef" "ls" "lkjnf" "outi"
 test "ijwneef" "ls" "lkjnf" "sdghrfhgrsfgd"
+test "infi" "" "cat" "out"
+test "unsfihewhfn" "ps aux" "grep cron" outi
+
 
 
 

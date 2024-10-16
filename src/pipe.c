@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../include/pipex.h"
+#include "../include/system_calls.h"
 
 char	*find_exec_in_path(char **path, char *exec)
 {
@@ -65,6 +66,8 @@ void	execute_child(t_pipe *pipex, int cmd_idx)
 	int		*pipe_pos;
 
 	arguments = ft_split(*pipex->argv, ' ');
+	if (!arguments || !arguments[0])
+		exit(-1);
 	arguments[0] = find_exec_in_path(pipex->path, arguments[0]);
 	pipe_pos = pipex->pipefds + (2 * cmd_idx);
 	if (pipex->argv[2] != NULL)

@@ -6,7 +6,7 @@
 /*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 19:44:12 by alvaro            #+#    #+#             */
-/*   Updated: 2024/10/15 13:56:43 by alvaro           ###   ########.fr       */
+/*   Updated: 2024/10/16 13:03:00 by alvaro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,5 +45,6 @@ char	*find_exec_in_path(char **path, char *exec);
 void	execute_child(t_pipe *pipex, int cmd_idx);
 void	execute_pipe(t_pipe *pipex);
 void	close_pipefds(t_pipe *pipex, int n_pipes);
+void	free_pipex(t_pipe *pipex);
 
 #endif

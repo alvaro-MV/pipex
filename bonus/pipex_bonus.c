@@ -42,7 +42,7 @@ void	call_pipe(t_pipe *pipex, int argc)
 	//checker_args(argv, argc, path);
 	pipex->outfile = open(pipex->argv[argc - 3], O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (pipex->outfile == -1)
-		return (perror(pipex->argv[argc - 3]), ft_free_array(pipex->path), exit(-1));
+		return (perror("outfile"), free_pipex(pipex), exit (-1));
 	execute_pipe(pipex);
 }
 
@@ -56,11 +56,10 @@ void	call_here_doc(t_pipe *pipex, int argc)
 	}
 	pipex->outfile = open(pipex->argv[argc - 4], O_APPEND | O_CREAT | O_TRUNC, 0644);
 	if (pipex->outfile == -1)
-		return (perror(pipex->argv[argc - 4]), ft_free_array(pipex->path), exit (-1));
+		return (perror(" "), free_pipex(pipex), exit (-1));
 	pipex->argv++;
 	argc--;
 	//checker_args(argv, argc, path);
-
 	execute_pipe(pipex);
 }
 
@@ -89,13 +88,12 @@ int	main(int argc, char *argv[], char *env[])
 	pipex.argv++;
 	if (init_pipex(&pipex, argc, env))
 		return (1);
-	if (ft_strcmp(pipex.argv[0], "here_doc") != 0)
+	if (ft_strcmp(argv[0], "here_doc") != 0)
 		call_pipe(&pipex, argc);
 	else
 		call_here_doc(&pipex, argc);	
 	manage_close(pipex.outfile);
 	ft_free_array(pipex.path);
-	//free(pipex.pipefds);
 	return (pipex.exit_status);
 }
 
