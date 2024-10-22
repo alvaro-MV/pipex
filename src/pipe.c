@@ -6,7 +6,7 @@
 /*   By: alvmoral <alvmoral@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 19:43:14 by alvaro            #+#    #+#             */
-/*   Updated: 2024/10/22 19:54:14 by alvmoral         ###   ########.fr       */
+/*   Updated: 2024/10/22 20:28:03 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,10 @@ void	execute_child(t_pipe *pipex, int cmd_idx)
 
 	arguments = ft_split(*pipex->argv, ' ');
 	if (!arguments || !arguments[0])
-		exit(-1);
+	{
+		ft_putstr_fd(" : no such file or directory\n", 2);
+		(free_pipex(pipex), ft_free_array(arguments), exit(-1));
+	}
 	arguments[0] = find_exec_in_path(pipex->path, arguments[0]);
 	pipe_pos = pipex->pipefds + (2 * cmd_idx);
 	if (pipex->argv[2] != NULL)

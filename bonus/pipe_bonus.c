@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alvmoral <alvmoral@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 19:43:14 by alvaro            #+#    #+#             */
-/*   Updated: 2024/10/22 12:16:30 by alvaro           ###   ########.fr       */
+/*   Updated: 2024/10/22 20:20:44 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,8 @@ void	execute_child(t_pipe *pipex, int cmd_idx)
 	int		*pipe_pos;
 
 	arguments = ft_split(*pipex->argv, ' ');
-	if (!arguments || !arguments[0])
-		exit(-1);
+	if (!arguments || !arguments[0] || !ft_strcmp(arguments[0], "\0"))
+		(free_pipex(pipex), ft_free_array(arguments), exit(-1));
 	arguments[0] = find_exec_in_path(pipex->path, arguments[0]);
 	pipe_pos = pipex->pipefds + (2 * cmd_idx);
 	if (pipex->argv[2] != NULL)
