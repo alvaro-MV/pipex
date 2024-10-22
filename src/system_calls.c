@@ -6,7 +6,7 @@
 /*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 16:59:37 by alvmoral          #+#    #+#             */
-/*   Updated: 2024/10/16 13:02:38 by alvaro           ###   ########.fr       */
+/*   Updated: 2024/10/22 12:14:33 by alvaro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	manage_dup2(int old_fd, int new_fd)
 		perror("");
 }
 
-int	ffork(char  **path)
+int	ffork(char **path)
 {
 	int	ret;
 

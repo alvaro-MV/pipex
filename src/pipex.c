@@ -6,13 +6,14 @@
 /*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 18:50:50 by alvaro            #+#    #+#             */
-/*   Updated: 2024/07/21 19:07:02by alvaro           ###   ########.fr       */
+/*   Updated: 2024/10/22 12:07:48 by alvaro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/pipex.h"
 #include "../lib/include/libft.h"
 #include "../include/system_calls.h"
+
 char	**get_path(char *env[])
 {
 	char	**path;
@@ -100,7 +101,7 @@ int	main(int argc, char *argv[], char *env[])
 	pipex.infile = open(argv[0], O_RDONLY);
 	if (pipex.infile == -1)
 		perror(argv[0]);
-	pipex.outfile = open(pipex.argv[argc - 2], O_RDWR | O_CREAT | O_TRUNC, 0644);
+	pipex.outfile = open(pipex.argv[argc - 2], O_RDWR, O_CREAT, O_TRUNC, 0644);
 	if (pipex.outfile == -1)
 		return (perror(" "), free_pipex(&pipex), -1);
 	pipex.argv = argv + 1;

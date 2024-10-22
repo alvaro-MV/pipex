@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvmoral <alvmoral@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 16:37:28 by alvmoral          #+#    #+#             */
-/*   Updated: 2024/09/11 13:21:58 by alvmoral         ###   ########.fr       */
+/*   Updated: 2024/10/22 12:04:21 by alvaro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,10 +50,10 @@ static char	*ft_strdup(char *s1)
 
 static int	get_lst_from_reads(int fd, t_list_g **lst)
 {
-	char	*read_buffer;
+	char		*read_buffer;
 	t_list_g	*last_node;
-	int		bytes_read;
-	int		eol_present;
+	int			bytes_read;
+	int			eol_present;
 
 	bytes_read = 1;
 	last_node = *lst;
@@ -79,8 +79,8 @@ static int	get_lst_from_reads(int fd, t_list_g **lst)
 static void	fill_buffers(t_list_g *lst, char *return_buffer, char *after_eol)
 {
 	t_list_g	*first_node;
-	char	*lst_content;
-	int		i;
+	char		*lst_content;
+	int			i;
 
 	if (lst == NULL)
 		return ;
@@ -109,7 +109,7 @@ char	*get_next_line(int fd)
 {
 	static char	after_eol[BUFFER_SIZE];
 	char		*return_buffer;
-	t_list_g		*lst;
+	t_list_g	*lst;
 	int			bytes_read;
 
 	if (fd < 0)

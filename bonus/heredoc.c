@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/11 13:22:49 by alvmoral          #+#    #+#             */
-/*   Updated: 2024/09/20 18:48:07by alvaro           ###   ########.fr       */
+/*   Created: 2024/10/22 12:04:57 by alvaro            #+#    #+#             */
+/*   Updated: 2024/10/22 12:05:18 by alvaro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,4 +42,3 @@ int	here_doc(char *delimiter, char **path)
 	close(infd[1]);
 	return (infd[0]);
 }
-

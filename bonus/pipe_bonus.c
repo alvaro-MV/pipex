@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipe.c                                             :+:      :+:    :+:   */
+/*   pipe_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 19:43:14 by alvaro            #+#    #+#             */
-/*   Updated: 2024/07/25 21:29:37alvaro           ###   ########.fr       */
+/*   Updated: 2024/10/22 12:16:30 by alvaro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,8 +87,8 @@ void	execute_child(t_pipe *pipex, int cmd_idx)
 
 void	execute_pipe(t_pipe *pipex)
 {
-	int 	cmd_idx;
-	int		*pipe_pos;
+	int	cmd_idx;
+	int	*pipe_pos;
 
 	cmd_idx = 0;
 	manage_dup2(pipex->infile, 0);

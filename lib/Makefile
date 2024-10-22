@@ -56,7 +56,6 @@ SRCS =	ft_atoi.c \
 		  ft_itoa.c \
 		  ft_strtoa.c \
 		  ft_xtoa.c \
-		  MT_random_generator.c \
 		  ft_free_array.c
 
 SRCS_BONUS = ft_lstadd_back_bonus.c \

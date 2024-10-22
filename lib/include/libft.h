@@ -6,7 +6,7 @@
 /*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 14:00:35 by alvmoral          #+#    #+#             */
-/*   Updated: 2024/10/16 19:13:09 by alvaro           ###   ########.fr       */
+/*   Updated: 2024/10/22 11:53:41 by alvaro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@
 # include <stdint.h>
 # include <limits.h>
 
-// linked list structure
 typedef struct s_list
 {
 	void			*content;
@@ -74,30 +73,14 @@ int		ft_tolower(int c);
 int		ft_toupper(int c);
 void	ft_free_array(char **marr);
 
+//testeo
 
-//printf 
-int	ft_xtoa_w(unsigned int nb, char c);
-int	ft_utoa_w(unsigned int nb);
-int	ft_itoa_w(int nb);
-int	ft_ptoa_w(unsigned long long nb);
-int	ft_printf(char const *s1, ...);
-int	ft_strtoa_w(char *str);
-int	ft_chtoa_w(unsigned int c);
-
-//RNG functions and MACROS
-
-# define INITIAL_SEED 7234
-# define LOWER_MASK 0x7fffffff
-# define UPPER_MASK 0x80000000
-# define N 624
-# define M 3
-# define A_M 0x9908b0df
-
-typedef struct  MTRandGen
-{
-    int vector[N];
-    int index;
-}       MTrand;
-unsigned int get_random_value(int seed);
+int		ft_xtoa_w(unsigned int nb, char c);
+int		ft_utoa_w(unsigned int nb);
+int		ft_itoa_w(int nb);
+int		ft_ptoa_w(unsigned long long nb);
+int		ft_printf(char const *s1, ...);
+int		ft_strtoa_w(char *str);
+int		ft_chtoa_w(unsigned int c);
 
 #endif

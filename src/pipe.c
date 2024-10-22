@@ -87,7 +87,7 @@ void	execute_child(t_pipe *pipex, int cmd_idx)
 
 void	execute_pipe(t_pipe *pipex)
 {
-	int 	cmd_idx;
+	int		cmd_idx;
 	int		*pipe_pos;
 
 	cmd_idx = 0;

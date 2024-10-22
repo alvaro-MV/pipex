@@ -6,7 +6,7 @@
 /*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 16:59:37 by alvmoral          #+#    #+#             */
-/*   Updated: 2024/10/16 17:45:09 by alvaro           ###   ########.fr       */
+/*   Updated: 2024/10/22 12:17:02 by alvaro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ int	manage_pipe(int pipefd[2], char **path)
 		perror("Pipe not working\n");
 		ft_free_array(path);
 		exit(-1);
-
 	}
 	return (0);
 }
@@ -30,13 +29,12 @@ void	manage_dup2(int old_fd, int new_fd)
 
 	if (old_fd == -1)
 		return ;
-	//else
 	dup_value = dup2(old_fd, new_fd);
 	if (dup_value == -1)
 		perror("");
 }
 
-int	ffork(char  **path)
+int	ffork(char **path)
 {
 	int	ret;
 

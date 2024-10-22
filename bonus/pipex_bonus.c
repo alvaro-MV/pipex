@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.c                                            :+:      :+:    :+:   */
+/*   pipex_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 18:50:50 by alvaro            #+#    #+#             */
-/*   Updated: 2024/07/21 19:07:02by alvaro           ###   ########.fr       */
+/*   Updated: 2024/10/22 12:13:36 by alvaro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ char	**get_path(char *env[])
 
 void	call_pipe(t_pipe *pipex, int argc)
 {
+	char	*out_name;
+
 	if (argc < 5)
 	{
 		ft_printf("Incorrect format: ");
@@ -43,8 +45,8 @@ void	call_pipe(t_pipe *pipex, int argc)
 		free(pipex->pid);
 		return ;
 	}
-	//checker_args(argv, argc, path);
-	pipex->outfile = open(pipex->argv[argc - 3], O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	out_name = pipex->argv[argc - 3];
+	pipex->outfile = open(out_name, O_WRONLY, O_CREAT, O_TRUNC, 0644);
 	if (pipex->outfile == -1)
 		return (perror("outfile"), free_pipex(pipex), exit (-1));
 	execute_pipe(pipex);
@@ -52,6 +54,8 @@ void	call_pipe(t_pipe *pipex, int argc)
 
 void	call_here_doc(t_pipe *pipex, int argc)
 {
+	char	*out_name;
+
 	if (argc < 5)
 	{
 		ft_printf("Incorrect format: ");
@@ -60,11 +64,10 @@ void	call_here_doc(t_pipe *pipex, int argc)
 		free(pipex->pid);
 		return ;
 	}
-	pipex->outfile = open(pipex->argv[argc - 4], O_RDWR | O_CREAT | O_APPEND, 0644);
+	out_name = pipex->argv[argc - 4];
+	pipex->outfile = open(out_name, O_RDWR | O_CREAT | O_APPEND, 0644);
 	if (pipex->outfile == -1)
 		return (perror(" "), free_pipex(pipex), exit (-1));
-	
-	//checker_args(argv, argc, path);
 	execute_pipe(pipex);
 }
 
@@ -101,4 +104,3 @@ int	main(int argc, char *argv[], char *env[])
 	ft_free_array(pipex.path);
 	return (pipex.exit_status);
 }
-

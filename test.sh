@@ -42,7 +42,6 @@ compare_outputs() {
     if [ "$(diff -q outi check)" = "" ]; then
 		echo "$GREEN [OK] $NC"
 	else
-		echo "$RED [KO] $NC"
 		print_files file1 file2
 	fi
 	printf "*------------*\n"

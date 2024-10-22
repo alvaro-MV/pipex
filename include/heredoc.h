@@ -6,7 +6,7 @@
 /*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 17:03:37 by alvmoral          #+#    #+#             */
-/*   Updated: 2024/10/16 18:36:21 by alvaro           ###   ########.fr       */
+/*   Updated: 2024/10/22 12:02:03 by alvaro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 # include "pipex_bonus.h"
 # include "heredoc.h"
-#include "system_calls_bonus.h"
+# include "system_calls_bonus.h"
 
 int		here_doc(char *delimiter, char **path);
 void	call_pipe(t_pipe *pipex, int argc);
