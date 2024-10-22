@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alvmoral <alvmoral@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 18:50:50 by alvaro            #+#    #+#             */
-/*   Updated: 2024/10/22 12:13:36 by alvaro           ###   ########.fr       */
+/*   Updated: 2024/10/22 19:56:13 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	call_pipe(t_pipe *pipex, int argc)
 		return ;
 	}
 	out_name = pipex->argv[argc - 3];
-	pipex->outfile = open(out_name, O_WRONLY, O_CREAT, O_TRUNC, 0644);
+	pipex->outfile = open(out_name, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (pipex->outfile == -1)
 		return (perror("outfile"), free_pipex(pipex), exit (-1));
 	execute_pipe(pipex);
@@ -99,7 +99,7 @@ int	main(int argc, char *argv[], char *env[])
 	if (ft_strcmp(argv[0], "here_doc") != 0)
 		call_pipe(&pipex, argc);
 	else
-		call_here_doc(&pipex, argc);	
+		call_here_doc(&pipex, argc);
 	manage_close(pipex.outfile);
 	ft_free_array(pipex.path);
 	return (pipex.exit_status);

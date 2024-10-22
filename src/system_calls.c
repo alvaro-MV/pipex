@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   system_calls.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alvmoral <alvmoral@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 16:59:37 by alvmoral          #+#    #+#             */
-/*   Updated: 2024/10/22 12:14:33 by alvaro           ###   ########.fr       */
+/*   Updated: 2024/10/22 19:55:25 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,4 +53,11 @@ void	manage_close(int fd)
 {
 	if (fd != -1)
 		close(fd);
+}
+
+void	free_pipex(t_pipe *pipex)
+{
+	ft_free_array(pipex->path);
+	close_pipefds(pipex, pipex->n_pipes);
+	free(pipex->pid);
 }

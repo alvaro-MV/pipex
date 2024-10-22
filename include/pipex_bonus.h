@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alvmoral <alvmoral@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 10:04:38 by alvaro            #+#    #+#             */
-/*   Updated: 2024/10/22 12:14:43 by alvaro           ###   ########.fr       */
+/*   Updated: 2024/10/22 19:48:54 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,23 +22,21 @@
 # include <linux/limits.h>
 # include "system_calls.h"
 # include "../include/get_next_line.h"
+# include "../include/pipex.h"
 
-typedef struct s_pipe
-{
-	char	**path;
-	char	**argv;
-	int		infile;
-	int		outfile;
-	int		n_pipes;
-	int		*pipefds;
-	int		exit_status;
-	pid_t	*pid;
-}			t_pipe;
+//typedef struct s_pipe
+//{
+	//char	**path;
+	//char	**argv;
+	//int		infile;
+	//int		outfile;
+	//int		n_pipes;
+	//int		*pipefds;
+	//int		exit_status;
+	//pid_t	*pid;
+//}			t_pipe;
 
 char	**get_path(char *env[]);
-void	checker_args(char **argv, int argc, char **path);
-
-int		exec_exist(char **path, char *exec);
 char	*find_exec_in_path(char **path, char *exec);
 void	execute_child(t_pipe *pipex, int cmd_idx);
 void	execute_pipe(t_pipe *pipex);
