@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alvmoral <alvmoral@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 18:50:50 by alvaro            #+#    #+#             */
-/*   Updated: 2024/10/22 12:07:48 by alvaro           ###   ########.fr       */
+/*   Updated: 2024/10/23 19:19:05 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,9 @@ void	close_pipefds(t_pipe *pipex, int n_pipes)
 
 int	init_pipex(t_pipe *pipex, int argc, char **env)
 {
+	char	*outfile;
+
+	outfile = pipex->argv[argc - 2];
 	pipex->n_pipes = argc - 3;
 	pipex->path = get_path(env);
 	pipex->pid = (pid_t *) ft_calloc((pipex->n_pipes), sizeof(pid_t));
@@ -81,6 +84,9 @@ int	init_pipex(t_pipe *pipex, int argc, char **env)
 	pipex->pipefds = set_pipefds(pipex, argc - 3);
 	if (pipex->pipefds == NULL)
 		return (ft_free_array(pipex->path), free(pipex->pid), 1);
+	pipex->outfile = open(outfile, O_RDWR | O_CREAT | O_TRUNC, 0644);
+	if (pipex->outfile == -1)
+		return (perror(" "), free_pipex(pipex), 1);
 	return (0);
 }
 
@@ -101,9 +107,6 @@ int	main(int argc, char *argv[], char *env[])
 	pipex.infile = open(argv[0], O_RDONLY);
 	if (pipex.infile == -1)
 		perror(argv[0]);
-	pipex.outfile = open(pipex.argv[argc - 2], O_RDWR, O_CREAT, O_TRUNC, 0644);
-	if (pipex.outfile == -1)
-		return (perror(" "), free_pipex(&pipex), -1);
 	pipex.argv = argv + 1;
 	execute_pipe(&pipex);
 	manage_close(pipex.outfile);
